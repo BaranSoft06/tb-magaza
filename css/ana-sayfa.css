@@ -1,0 +1,242 @@
+/* =========================================================
+   T&B — ANA SAYFA STİLLERİ
+   Açılış animasyonu ve karşılama alanı (hero).
+   ========================================================= */
+
+/* ---------- Açılış animasyonu ----------
+   @keyframes: bir animasyonun adımlarını tanımlar (from = başlangıç,
+   to = bitiş). Sonra "animation" özelliğiyle bir öğeye uygularız:
+   animation: ad süre hız-eğrisi gecikme doldurma;
+
+   Zaman çizelgesi:
+   0.0s – 1.2s  "&" dönerek büyür
+   1.0s – 1.8s  T soldan, B sağdan kayar
+   2.2s – 2.8s  siyah katman kaybolur */
+
+.acilis {
+  position: fixed;
+  inset: 0; /* top, right, bottom, left hepsi 0: tüm ekranı kapla */
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--gece);
+  animation: acilis-kaybol 0.6s ease 2.2s forwards;
+}
+
+.acilis-logo {
+  display: flex;
+  align-items: baseline;
+  font-family: var(--font-baslik);
+  font-weight: 800;
+  font-size: clamp(5rem, 24vw, 11rem); /* clamp(en küçük, ideal, en büyük) */
+  line-height: 1;
+  color: var(--krem);
+}
+
+.acilis-amp {
+  display: inline-block;
+  margin: 0 0.04em;
+  font-family: var(--font-amp);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.4em;
+  color: var(--sari);
+  /* "both": animasyon başlamadan önce ilk karede, bitince son karede kal */
+  animation: amp-don 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.acilis-t {
+  display: inline-block;
+  animation: soldan-gel 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 1s both;
+}
+
+.acilis-b {
+  display: inline-block;
+  animation: sagdan-gel 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 1s both;
+}
+
+@keyframes amp-don {
+  from {
+    opacity: 0;
+    transform: scale(0) rotate(-360deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes soldan-gel {
+  from {
+    opacity: 0;
+    transform: translateX(-60vw);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes sagdan-gel {
+  from {
+    opacity: 0;
+    transform: translateX(60vw);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes acilis-kaybol {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* acilis.js, animasyon daha önce görüldüyse <html>'e bu sınıfı ekler */
+.acilis-atla .acilis {
+  display: none;
+}
+
+/* ---------- Karşılama alanı (hero) ---------- */
+.hero {
+  /* Hero yazılarının ne zaman gelmeye başlayacağı:
+     açılış animasyonu oynuyorsa onun bitmesini bekle */
+  --gecikme-baz: 2.3s;
+
+  position: relative;
+  overflow: hidden;
+  min-height: calc(100svh - var(--menu-yukseklik)); /* svh: telefonun görünen ekran yüksekliği */
+  display: flex;
+  align-items: center;
+  padding: 48px var(--kenar-bosluk);
+}
+
+/* Açılış atlandıysa beklemeye gerek yok */
+.acilis-atla .hero {
+  --gecikme-baz: 0.1s;
+}
+
+.hero-ic {
+  position: relative;
+  z-index: 1; /* süslemelerin önünde dursun */
+  width: 100%;
+  max-width: var(--icerik-genislik);
+  margin: 0 auto;
+}
+
+.hero-baslik {
+  font-family: var(--font-baslik);
+  font-weight: 800;
+  font-size: clamp(3rem, 14vw, 8.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.hero-baslik .vurgu {
+  display: block;
+  color: var(--sari);
+}
+
+.hero-slogan {
+  max-width: 32ch; /* ch: bir karakter genişliği; satır çok uzamasın */
+  margin-top: 20px;
+  font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+  color: color-mix(in srgb, var(--krem) 80%, transparent);
+}
+
+.hero .buton {
+  margin-top: 32px;
+}
+
+/* Hero öğeleri sırayla aşağıdan kayarak gelir.
+   calc ile her öğenin gecikmesini --sira'ya göre hesaplıyoruz:
+   0. öğe hemen, 1. öğe 0.12s sonra, 2. öğe 0.24s sonra... */
+.hero-oge {
+  animation: yukari-kay 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(var(--gecikme-baz) + var(--sira) * 0.12s);
+}
+
+@keyframes yukari-kay {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Hero süslemeleri ---------- */
+
+/* Sol üstte yavaşça süzülen mor ışık */
+.hero-dekor-daire {
+  position: absolute;
+  top: -20%;
+  left: -25%;
+  width: 80vw;
+  max-width: 700px;
+  aspect-ratio: 1; /* genişlik = yükseklik, tam daire */
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--mor) 55%, transparent), transparent 70%);
+  filter: blur(20px);
+  animation: suzul 8s ease-in-out infinite alternate;
+}
+
+/* Sağ altta yavaşça dönen dev, içi boş "&" */
+.hero-dekor-amp {
+  position: absolute;
+  right: -15%;
+  bottom: -20%;
+  font-family: var(--font-amp);
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(20rem, 80vw, 44rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--mor); /* sadece harfin dış çizgisi */
+  opacity: 0.6;
+  user-select: none;
+  animation: yavas-don 30s linear infinite;
+}
+
+@keyframes suzul {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(15%, 10%) scale(1.15);
+  }
+}
+
+@keyframes yavas-don {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-dekor-amp {
+    right: -5%;
+    bottom: -25%;
+  }
+}
+
+/* ---------- Hareketi azalt ----------
+   Telefonunda/bilgisayarında "hareketi azalt" ayarını açmış
+   kullanıcılara animasyon göstermiyoruz (erişilebilirlik). */
+@media (prefers-reduced-motion: reduce) {
+  .acilis {
+    display: none;
+  }
+
+  .hero-oge,
+  .hero-dekor-daire,
+  .hero-dekor-amp {
+    animation: none;
+  }
+}

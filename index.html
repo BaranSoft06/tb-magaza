@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>T&amp;B | Yeni sezon</title>
+  <meta name="description" content="T&B: Kendi tasarımımız, senin tarzın. Şık ve günlük kadın ve erkek giyim.">
+
+  <!-- Google Fonts: preconnect, fontların daha hızlı inmesi için bağlantıyı önceden açar -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@1,700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+  <!-- Ortak stiller (tüm sayfalar) + sadece ana sayfaya özel stiller -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/ana-sayfa.css">
+
+  <!-- Açılış kodu <head> içinde ve "defer" OLMADAN yüklenir:
+       animasyon daha önce görüldüyse siyah ekran bir an bile görünmesin diye
+       sayfa çizilmeden önce çalışması gerekiyor. -->
+  <script src="js/acilis.js"></script>
+
+  <!-- defer: HTML tamamen okunduktan sonra çalıştır demek -->
+  <script src="js/menu.js" defer></script>
+</head>
+<body>
+
+  <!-- ========== AÇILIŞ ANİMASYONU ========== -->
+  <!-- aria-hidden: ekran okuyucular bu süs katmanını okumasın -->
+  <div class="acilis" id="acilis" aria-hidden="true">
+    <div class="acilis-logo">
+      <span class="acilis-t">T</span><span class="acilis-amp">&amp;</span><span class="acilis-b">B</span>
+    </div>
+  </div>
+
+  <!-- ========== ÜST MENÜ ========== -->
+  <header class="ust-menu">
+    <div class="ust-menu-ic">
+      <a href="index.html" class="logo" aria-label="T&amp;B ana sayfa">
+        <span>T</span><span class="logo-amp">&amp;</span><span>B</span>
+      </a>
+
+      <nav class="ana-nav" id="ana-nav" aria-label="Ana menü">
+        <ul>
+          <!-- aria-current="page": şu an bu sayfada olduğumuzu belirtir -->
+          <li><a href="index.html" aria-current="page">Ana Sayfa</a></li>
+          <li><a href="urunler.html">Ürünler</a></li>
+          <li><a href="hakkimizda.html">Hakkımızda</a></li>
+          <li><a href="iletisim.html">İletişim</a></li>
+        </ul>
+      </nav>
+
+      <div class="ust-menu-sag">
+        <a href="sepet.html" class="sepet-ikon" aria-label="Sepet (0 ürün)">
+          <!-- SVG: kodla çizilen ikon; dışarıdan resim dosyası gerekmez -->
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 7h12l-1 13H7L6 7z"/>
+            <path d="M9 7V5a3 3 0 0 1 6 0v2"/>
+          </svg>
+          <span class="sepet-adet">0</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-expanded="false" aria-controls="ana-nav" aria-label="Menüyü aç">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ========== KARŞILAMA ALANI (HERO) ========== -->
+    <section class="hero">
+      <!-- Arka plandaki süslemeler -->
+      <div class="hero-dekor-daire" aria-hidden="true"></div>
+      <div class="hero-dekor-amp" aria-hidden="true">&amp;</div>
+
+      <div class="hero-ic">
+        <!-- --sira: her öğenin sırayla, biraz arayla gelmesi için kullanılıyor -->
+        <h1 class="hero-baslik hero-oge" style="--sira: 0">
+          Yeni sezon.
+          <span class="vurgu">Yeni sen.</span>
+        </h1>
+        <p class="hero-slogan hero-oge" style="--sira: 1">Kendi tasarımımız, senin tarzın.</p>
+        <a href="urunler.html" class="buton hero-oge" style="--sira: 2">
+          Ürünleri keşfet
+          <span class="buton-ok" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

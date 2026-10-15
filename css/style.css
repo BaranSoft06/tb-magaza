@@ -1,0 +1,324 @@
+/* =========================================================
+   T&B — ORTAK STİLLER
+   Bu dosya tüm sayfalarda kullanılır: renkler, fontlar,
+   temel ayarlar, logo, üst menü ve buton.
+   ========================================================= */
+
+/* ---------- Marka değişkenleri ----------
+   CSS değişkeni (custom property): bir değeri bir kez tanımlayıp
+   her yerde var(--ad) ile kullanmamızı sağlar. Rengi değiştirmek
+   istersek sadece burayı değiştirmemiz yeterli. */
+:root {
+  --gece: #141414;    /* Gece siyahı: ana zemin, yazılar */
+  --sari: #FFC93C;    /* Güneş sarısı: ampersand, vurgular */
+  --mercan: #FF5A36;  /* Mercan turuncu: butonlar, indirim etiketleri */
+  --mor: #6C3BFF;     /* Elektrik moru: ikinci vurgu, animasyonlar */
+  --krem: #FFF4EC;    /* Krem: açık zeminler */
+
+  --font-baslik: 'Syne', sans-serif;
+  --font-amp: 'Playfair Display', serif;
+  --font-metin: 'DM Sans', sans-serif;
+
+  --menu-yukseklik: 64px;
+  --kenar-bosluk: 20px;
+  --icerik-genislik: 1200px;
+}
+
+/* ---------- Temel ayarlar (sıfırlama) ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* genişliğe padding ve kenarlık da dahil olsun */
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--gece);
+  color: var(--krem);
+  font-family: var(--font-metin);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+svg {
+  display: block;
+}
+
+/* Klavyeyle gezinenler nerede olduklarını görsün */
+:focus-visible {
+  outline: 2px solid var(--sari);
+  outline-offset: 3px;
+}
+
+/* ---------- Logo ---------- */
+.logo {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-baslik);
+  font-weight: 800;
+  font-size: 1.75rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.logo-amp {
+  display: inline-block; /* transform'un çalışması için gerekli */
+  margin: 0 0.04em;
+  font-family: var(--font-amp);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.3em;
+  color: var(--sari);
+  transition: transform 0.4s ease;
+}
+
+.logo:hover .logo-amp {
+  transform: rotate(-15deg) scale(1.15);
+}
+
+/* ---------- Üst menü (telefon) ---------- */
+.ust-menu {
+  position: sticky; /* sayfa kayınca menü üstte yapışık kalır */
+  top: 0;
+  z-index: 100;
+  /* color-mix: rengi şeffaflıkla karıştırır, yarı saydam zemin elde ederiz */
+  background: color-mix(in srgb, var(--gece) 85%, transparent);
+  backdrop-filter: blur(10px); /* arkadaki içeriği bulanıklaştırır */
+  border-bottom: 1px solid color-mix(in srgb, var(--krem) 10%, transparent);
+}
+
+.ust-menu-ic {
+  height: var(--menu-yukseklik);
+  max-width: var(--icerik-genislik);
+  margin: 0 auto;
+  padding: 0 var(--kenar-bosluk);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ust-menu-sag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Telefonda menü linkleri, menünün altına açılan bir panel */
+.ana-nav {
+  position: absolute;
+  top: var(--menu-yukseklik);
+  left: 0;
+  right: 0;
+  padding: 8px var(--kenar-bosluk) 24px;
+  background: var(--gece);
+  border-bottom: 1px solid color-mix(in srgb, var(--krem) 10%, transparent);
+  /* Kapalıyken gizli ve biraz yukarıda */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-12px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+
+/* menu.js "acik" sınıfını ekleyince panel görünür */
+.ana-nav.acik {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.ana-nav a {
+  display: block;
+  padding: 14px 0;
+  font-family: var(--font-baslik);
+  font-weight: 700;
+  font-size: 1.5rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--krem) 8%, transparent);
+  transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.ana-nav a:hover {
+  color: var(--sari);
+  padding-left: 8px;
+}
+
+.ana-nav a[aria-current="page"] {
+  color: var(--sari);
+}
+
+/* ---------- Sepet ikonu ---------- */
+.sepet-ikon {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.sepet-ikon:hover {
+  background: color-mix(in srgb, var(--krem) 10%, transparent);
+  transform: rotate(-8deg);
+}
+
+.sepet-adet {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: var(--mercan);
+  color: var(--gece);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* ---------- Hamburger butonu ---------- */
+.hamburger {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.hamburger span {
+  width: 24px;
+  height: 2px;
+  background: var(--krem);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+/* Menü açıkken üç çizgi X şekline döner */
+.hamburger[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ---------- Buton ---------- */
+.buton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 28px;
+  border-radius: 999px;
+  background: var(--mercan);
+  color: var(--gece);
+  font-weight: 700;
+  font-size: 1.05rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.buton:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 var(--mor);
+}
+
+.buton-ok {
+  transition: transform 0.25s ease;
+}
+
+.buton:hover .buton-ok {
+  transform: translateX(4px);
+}
+
+/* =========================================================
+   BÜYÜK EKRANLAR (tablet ve üstü)
+   Mobile-first: yukarıdaki kurallar telefon için yazıldı,
+   burada sadece büyük ekranda değişenleri yazıyoruz.
+   ========================================================= */
+@media (min-width: 768px) {
+  :root {
+    --menu-yukseklik: 76px;
+    --kenar-bosluk: 40px;
+  }
+
+  .logo {
+    font-size: 2rem;
+  }
+
+  .hamburger {
+    display: none;
+  }
+
+  /* Panel değil, menünün içinde yan yana duran linkler */
+  .ana-nav {
+    position: static;
+    margin-left: auto;
+    padding: 0;
+    background: none;
+    border: 0;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .ana-nav ul {
+    display: flex;
+    gap: 32px;
+  }
+
+  .ana-nav a {
+    position: relative;
+    padding: 6px 0;
+    font-family: var(--font-metin);
+    font-weight: 500;
+    font-size: 1rem;
+    border: 0;
+  }
+
+  .ana-nav a:hover {
+    padding-left: 0;
+  }
+
+  /* Linkin altındaki çizgi: ::after ile eklenen sahte bir öğe */
+  .ana-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--sari);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .ana-nav a:hover::after,
+  .ana-nav a[aria-current="page"]::after {
+    transform: scaleX(1);
+  }
+}
