@@ -94,6 +94,20 @@ function renklerOlustur(urun) {
   return `<ul class="urun-renkler" aria-label="Renkler: ${adlar}">${daireler}</ul>`;
 }
 
+// Kalp butonu. aria-pressed: ekran okuyucuya "favoride mi" bilgisini verir,
+// CSS de dolu/boş kalbi bu bilgiye göre çizer.
+function kalpOlustur(urun) {
+  const favoride = favorideMi(urun.id);
+  return `
+    <button type="button" class="kalp-buton" data-id="${urun.id}"
+            aria-pressed="${favoride}" aria-label="${urun.ad}: favorilere ekle">
+      <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 7.8 3.7 4.5 7.1 4.5c2 0 3.6 1.1 4.9 3 1.3-1.9 2.9-3 4.9-3 3.4 0 5.7 3.3 4.4 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/>
+      </svg>
+    </button>`;
+}
+
 function kartOlustur(urun) {
   // Template literal (ters tırnak `...`): içine ${...} ile değer
   // yerleştirebildiğimiz çok satırlı metin. Kartın HTML'ini böyle kuruyoruz.
@@ -103,6 +117,7 @@ function kartOlustur(urun) {
         <span class="urun-gorsel-amp" aria-hidden="true">&amp;</span>
         ${cizimOlustur(urun)}
         ${etiketlerOlustur(urun)}
+        ${kalpOlustur(urun)}
       </div>
       <div class="urun-bilgi">
         <p class="urun-tur">${CINSIYET_ADI[urun.cinsiyet]} · ${TUR_ADI[urun.tur]}</p>
@@ -395,6 +410,31 @@ secenekler.forEach(function (secenek, sira) {
 document.addEventListener('click', function (olay) {
   if (listeAcikMi() && !siralamaKutu.contains(olay.target)) {
     listeyiKapat();
+  }
+});
+
+// =========================================================
+// KALP (FAVORİLER)
+// Kartlar filtreyle sürekli yeniden oluşturulduğu için her kalbe
+// ayrı dinleyici eklemek yerine listenin tamamını dinliyoruz
+// (olay delegasyonu): tıklanan şey bir kalp butonuysa işliyoruz.
+// =========================================================
+urunAlani.addEventListener('click', function (olay) {
+  const buton = olay.target.closest('.kalp-buton');
+  if (!buton) return;
+
+  const eklendi = favoriDegistir(buton.dataset.id);
+
+  // Aynı ürünün sayfadaki bütün kalpleri (ileride hızlı bakıştaki de) güncellensin
+  document.querySelectorAll(`.kalp-buton[data-id="${buton.dataset.id}"]`).forEach(function (kalp) {
+    kalp.setAttribute('aria-pressed', eklendi);
+  });
+
+  // Patlama animasyonu sadece eklerken; çıkarırken kalp sessizce boşalır
+  buton.classList.remove('patla');
+  if (eklendi) {
+    void buton.offsetWidth; // animasyonu baştan başlatmak için (favoriler.js'teki gibi)
+    buton.classList.add('patla');
   }
 });
 

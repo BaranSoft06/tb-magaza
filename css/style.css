@@ -226,7 +226,9 @@ svg {
   color: var(--sari);
 }
 
-/* ---------- Sepet ikonu ---------- */
+/* ---------- Favori ve sepet ikonları ----------
+   İkisi aynı görünüşü paylaşıyor; sadece sayı rengi farklı */
+.favori-ikon,
 .sepet-ikon {
   position: relative;
   width: 44px;
@@ -237,11 +239,13 @@ svg {
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
+.favori-ikon:hover,
 .sepet-ikon:hover {
   background: color-mix(in srgb, var(--krem) 10%, transparent);
   transform: rotate(-8deg);
 }
 
+.favori-adet,
 .sepet-adet {
   position: absolute;
   top: 4px;
@@ -257,6 +261,23 @@ svg {
   font-size: 0.7rem;
   font-weight: 700;
   line-height: 1;
+}
+
+/* Favori sayısı mor: sepetin mercan sayısından ayırt edilsin */
+.favori-adet {
+  background: var(--mor);
+  color: var(--krem);
+}
+
+/* Favori eklenip çıkarılınca sayı hafifçe zıplar (js/favoriler.js ekler) */
+.favori-adet.zipla {
+  animation: sayi-zipla 0.5s cubic-bezier(0.3, 1.8, 0.5, 1);
+}
+
+@keyframes sayi-zipla {
+  30% {
+    transform: translateY(-6px) scale(1.25);
+  }
 }
 
 /* ---------- Hamburger butonu ---------- */
@@ -537,6 +558,10 @@ svg {
 /* "Hareketi azalt" ayarı açıksa şerit kaymasın, sayfa geçişi olmasın */
 @media (prefers-reduced-motion: reduce) {
   .serit-ray {
+    animation: none;
+  }
+
+  .favori-adet.zipla {
     animation: none;
   }
 

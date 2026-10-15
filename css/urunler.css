@@ -284,6 +284,131 @@
   text-transform: uppercase;
 }
 
+/* ---------- Kalp (favori) butonu ---------- */
+.kalp-buton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--krem);
+  color: var(--gece);
+  transition: transform 0.25s ease;
+}
+
+.kalp-buton svg {
+  fill: transparent;
+  transition: fill 0.2s ease, color 0.2s ease;
+}
+
+/* Krem zeminde krem daire kaybolmasın: ince koyu çizgi + hafif gölge */
+.zemin-krem .kalp-buton {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--gece) 18%, transparent),
+    0 3px 10px color-mix(in srgb, var(--gece) 18%, transparent);
+}
+
+/* Favorideyse kalp mercan renginde dolu */
+.kalp-buton[aria-pressed="true"] {
+  color: var(--mercan);
+}
+
+.kalp-buton[aria-pressed="true"] svg {
+  fill: var(--mercan);
+}
+
+@media (hover: hover) {
+  .kalp-buton:hover {
+    transform: scale(1.1);
+  }
+}
+
+/* PATLAMA: js eklerken "patla" sınıfını verir.
+   1. Kalp önce küçülüp sonra büyüyerek dolar.
+   2. ::before → kalpten dışa doğru genişleyip kaybolan bir halka.
+   3. ::after  → etrafa saçılan renkli noktalar. Tek bir küçük noktanın
+      box-shadow'u ile 8 kopyası çiziliyor; nokta büyüdükçe kopyalar
+      dışa doğru açılıyor. Ekstra HTML gerekmiyor. */
+.kalp-buton::before,
+.kalp-buton::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.kalp-buton::before {
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 3px solid var(--mercan);
+}
+
+.kalp-buton::after {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  box-shadow:
+    0 -26px 0 var(--sari),
+    18px -18px 0 var(--mor),
+    26px 0 0 var(--mercan),
+    18px 18px 0 var(--sari),
+    0 26px 0 var(--mor),
+    -18px 18px 0 var(--mercan),
+    -26px 0 0 var(--sari),
+    -18px -18px 0 var(--mor);
+}
+
+.kalp-buton.patla svg {
+  animation: kalp-dol 0.5s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+.kalp-buton.patla::before {
+  animation: halka-ac 0.5s ease-out;
+}
+
+.kalp-buton.patla::after {
+  animation: noktalar-sac 0.6s ease-out;
+}
+
+@keyframes kalp-dol {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(0.6); }
+  60%  { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+@keyframes halka-ac {
+  from {
+    opacity: 1;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes noktalar-sac {
+  from {
+    opacity: 1;
+    transform: scale(0.3);
+  }
+  70% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+
 /* ---------- Kart bilgileri ---------- */
 .urun-bilgi {
   padding: 12px 2px 0;
@@ -403,7 +528,10 @@
     transition: none;
   }
 
-  .siralama.acik .siralama-secenek {
+  .siralama.acik .siralama-secenek,
+  .kalp-buton.patla svg,
+  .kalp-buton.patla::before,
+  .kalp-buton.patla::after {
     animation: none;
   }
 }
