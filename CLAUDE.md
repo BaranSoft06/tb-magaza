@@ -29,6 +29,7 @@ T&B; Baran ve Taylan'ın kendi tasarladıkları kadın ve erkek kıyafetlerini s
 - Siteyi VS Code'daki Live Server ile çalıştırıyoruz.
 - Sepet verisi tarayıcıda `localStorage` ile tutulur.
 - Gerçek ödeme yok: sepetin sonunda demo ödeme ekranı ve sepeti WhatsApp mesajı olarak gönderen bir buton olacak.
+- WhatsApp numarası sadece `js/ayarlar.js` içinde durur (şimdilik demo numara). Gerçek numara belli olunca sadece orası değişir; numarayı başka dosyalara yazma.
 - Önce telefon ekranına göre tasarla (mobile-first), sonra büyük ekranlara uyarla.
 
 ## Marka
@@ -60,6 +61,7 @@ Logo: "T&B" yazısı; T ve B kalın Syne, aradaki "&" büyük, italik ve sarı. 
 4. Sepet: ekle/çıkar, adet, toplam, demo ödeme ve WhatsApp butonu
 5. Hakkımızda
 6. İletişim
+7. Kendin Tasarla: seçili ürünlerde renk, kumaş, baskı vb. seçimi, canlı görsel, tahmini fiyat
 
 ## Klasör yapısı
 
@@ -70,6 +72,7 @@ TB/
 ├── urun.html
 ├── sepet.html
 ├── odeme.html
+├── tasarla.html
 ├── favoriler.html
 ├── hakkimizda.html
 ├── iletisim.html
@@ -98,7 +101,7 @@ Genel hava: çok dinamik, hareketli ve ilgi çekici; ama animasyonlar sayfayı y
 2. Ürünler sayfası
    - [x] 12 demo ürün (6 kadın, 6 erkek; şık ve günlük giyim; gerçekçi TL fiyatlar)
    - [x] Marka renklerinde yer tutucu görseller
-   - [ ] Tümü / Kadın / Erkek filtresi
+   - [x] Tümü / Kadın / Erkek filtresi
    - [ ] Kaydırdıkça beliren kartlar
    - [ ] Kalp ikonuyla favorilere ekleme
    - [ ] Açılan pencerede hızlı bakış
@@ -116,8 +119,30 @@ Genel hava: çok dinamik, hareketli ve ilgi çekici; ama animasyonlar sayfayı y
    - [ ] Numaranın başına göre Visa / Mastercard logosu
    - [ ] Sipariş tamamlanınca konfeti efekti
    - [ ] Kart bilgileri hiçbir yere gönderilmez ve kaydedilmez; sayfada "Bu bir demodur, gerçek ödeme alınmaz" yazar
-6. Favoriler sayfası
+6. Kendin Tasarla (Taylan onayladı)
+   - [ ] Ürün verisine her ürün için `kisisellestirilebilir: true/false` alanı; demo ürünlerden 5-6 tanesi (genellikle düşük ve orta fiyatlılar) seçilir
+   - [ ] Bu ürünlerin kartında küçük "Kendin tasarla" rozeti, detay sayfasında "Kendin tasarla" butonu
+   - [ ] Tasarım sayfası (tasarla.html): renk, kumaş, kalıp, baskı (ön/arka/kol, yazı veya desen), nakış, düğme/yaka tipi seçimi
+   - [ ] Kıyafet görseli seçimlere göre canlı olarak değişir
+   - [ ] "Özel isteğin var mı?" metin kutusu; bu isteklerin fiyatının sonra bildirileceği notu
+   - [ ] Fiyat: ürünün kendi fiyatı + seçimlerin ek ücretleri. Ek ücretler tek bir dosyada (js/tasarim-fiyatlari.js) tablo halinde durur, Taylan kolayca değiştirebilir; şimdilik gerçekçi demo değerler
+   - [ ] Fiyat sayaç animasyonuyla artar; yanında hangi seçimin ne kadar eklediği liste olarak görünür; fiyatın yanında "tahmini fiyat" yazar
+   - [ ] Tasarlanan ürün seçimleriyle birlikte sepete eklenir
+7. Demo sohbet asistanı
+   - [ ] Sağ altta sohbet balonu, tüm sayfalarda; ödeme sayfasında form alanlarının üstüne binmez
+   - [ ] Üzerinde "Demo asistan" yazar, yapay zeka gibi gösterilmez
+   - [ ] Sık sorulan sorulara (kargo, iade, beden, kişiselleştirme) hazır cevaplar
+   - [ ] Cevabı yoksa WhatsApp'a yönlendirir
+8. Favoriler sayfası
    - [ ] Favorilere eklenen ürünlerin listesi
-7. Hakkımızda ve İletişim sayfaları
+9. Hakkımızda ve İletişim sayfaları
    - [ ] Hakkımızda
    - [ ] İletişim
+
+## Aşama 2 (ileride)
+
+Aşama 1 bitmeden bu bölümdeki işlere başlanmaz; burada sadece hedef olarak not ediliyor.
+
+- Sohbet asistanı gerçek bir yapay zekaya bağlanacak; müşteri konuşarak tasarım yapabilecek.
+- Yapay zeka fiyatı kendisi uydurmayacak: fiyatı sadece js/tasarim-fiyatlari.js tablosundan hesaplayacak.
+- Siparişe son onayı Taylan verecek.
