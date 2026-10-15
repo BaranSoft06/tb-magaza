@@ -99,4 +99,17 @@
   document.documentElement.addEventListener('mouseleave', function () {
     document.documentElement.classList.add('imlec-disarida');
   });
+
+  // pageswap: başka sayfaya geçmeden hemen önce, tarayıcı geçiş animasyonu
+  // için bu sayfanın fotoğrafını çekmeden önce tetiklenir. İmleci o anda
+  // gizliyoruz ki fotoğrafa girip perdeyle birlikte kaymasın.
+  window.addEventListener('pageswap', function () {
+    document.documentElement.classList.add('imlec-gecis');
+  });
+
+  // pageshow: sayfa her gösterildiğinde tetiklenir. "Geri" tuşuyla bu sayfaya
+  // dönülürse tarayıcı sayfayı hafızadan aynen getirir; imleç gizli kalmasın.
+  window.addEventListener('pageshow', function () {
+    document.documentElement.classList.remove('imlec-gecis');
+  });
 })();

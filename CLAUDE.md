@@ -90,7 +90,7 @@ Genel hava: çok dinamik, hareketli ve ilgi çekici; ama animasyonlar sayfayı y
 1. Siteyi baştan sona saran özellikler
    - [x] Sayfanın en üstünde sürekli kayan yazı şeridi ("Ücretsiz kargo • Yeni sezon • Kendi tasarımımız" gibi)
    - [x] Markaya uygun özel fare imleci (sadece bilgisayarda, telefonda normal kalsın)
-   - [ ] Sayfalar arası yumuşak geçiş animasyonu
+   - [x] Sayfalar arası yumuşak geçiş animasyonu
    - [ ] Menüde ürün arama
    - [x] Footer: logo, linkler, sosyal medya, "Bu bir demo sitedir" notu
 2. Ürünler sayfası

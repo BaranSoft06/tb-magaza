@@ -467,10 +467,81 @@ svg {
   scale: 1.4;
 }
 
-/* "Hareketi azalt" ayarı açıksa şerit kaymasın */
+/* Sayfa değişirken imleç gizlenir; yoksa eski sayfanın fotoğrafına
+   girip perdeyle birlikte kayar (js/imlec.js ekler) */
+.imlec-gecis .imlec-nokta,
+.imlec-gecis .imlec-halka {
+  display: none;
+}
+
+/* ---------- Sayfalar arası geçiş ----------
+   View Transitions: tarayıcı, linke tıklanınca eski sayfanın bir
+   "fotoğrafını" çeker, yeni sayfayı yükler ve ikisi arasında animasyon
+   yapar. Bu satır, sitemizdeki tüm sayfa geçişlerinde bunu açar.
+   Desteklemeyen tarayıcılarda (ör. Firefox) sayfa normal açılır. */
+@view-transition {
+  navigation: auto;
+}
+
+/* Menü iki sayfada da aynı: ona ayrı bir isim verince tarayıcı onu
+   sayfanın geri kalanından ayırır ve yerinde sabit tutar. Sadece
+   içerik hareket eder, menü kıpırdamaz. */
+.ust-menu {
+  view-transition-name: ust-menu;
+}
+
+/* SARI PERDE
+   ::view-transition, geçiş sırasında tüm ekranı kaplayan katman.
+   Zeminini sarı yapıyoruz; sayfaların fotoğrafları bunun önünde durur.
+   "root" sayfanın geri kalanı demek (menü hariç).
+
+   clip-path: inset(üst sağ alt sol) bir öğenin sadece bir kısmını gösterir.
+   1. Eski sayfa soldan sağa doğru silinir → arkasındaki sarı görünür.
+   2. Biraz geriden yeni sayfa soldan sağa doğru açılır → sarıyı örter.
+   İkisinin arasındaki boşluk, ekranı süpüren sarı bir perde gibi görünür. */
+::view-transition {
+  background: var(--sari);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  mix-blend-mode: normal; /* tarayıcının varsayılan karışım efektini kapat */
+}
+
+::view-transition-old(root) {
+  animation: perde-sil 0.45s cubic-bezier(0.7, 0, 0.3, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: perde-ac 0.45s cubic-bezier(0.7, 0, 0.3, 1) 0.18s both;
+}
+
+@keyframes perde-sil {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 100%); /* soldan %100 kırp: tamamen gizli */
+  }
+}
+
+@keyframes perde-ac {
+  from {
+    clip-path: inset(0 100% 0 0); /* sağdan %100 kırp: henüz hiç görünmüyor */
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* "Hareketi azalt" ayarı açıksa şerit kaymasın, sayfa geçişi olmasın */
 @media (prefers-reduced-motion: reduce) {
   .serit-ray {
     animation: none;
+  }
+
+  @view-transition {
+    navigation: none;
   }
 }
 
