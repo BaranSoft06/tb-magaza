@@ -227,6 +227,123 @@
   }
 }
 
+/* ---------- Kategori kartları (Kadın / Erkek) ---------- */
+.kategoriler {
+  padding: 24px var(--kenar-bosluk) 72px;
+}
+
+.kategoriler-ic {
+  max-width: var(--icerik-genislik);
+  margin: 0 auto;
+  display: grid;
+  gap: 16px; /* telefonda alt alta */
+}
+
+.kategori-kart {
+  position: relative;
+  overflow: hidden; /* büyüyen "&" kartın dışına taşmasın */
+  min-height: 220px;
+  padding: 24px;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* yazılar kartın altında */
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.35s ease, color 0.35s ease, box-shadow 0.45s ease;
+}
+
+.kategori-kadin {
+  background: var(--mercan);
+  color: var(--gece);
+}
+
+.kategori-erkek {
+  background: var(--mor);
+  color: var(--krem);
+}
+
+/* Köşedeki dev "&" */
+.kategori-amp {
+  position: absolute;
+  top: -30%;
+  right: -4%;
+  font-family: var(--font-amp);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 16rem;
+  line-height: 1;
+  opacity: 0.18;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s ease;
+}
+
+.kategori-ad {
+  position: relative;
+  font-family: var(--font-baslik);
+  font-weight: 800;
+  font-size: clamp(3rem, 14vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.kategori-alt {
+  position: relative;
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.kategori-ok {
+  transition: transform 0.3s ease;
+}
+
+/* Üzerine gelince (ya da klavyeyle odaklanınca): kart büyür, sarıya döner,
+   "&" döner ve ok ileri kayar. Telefonda dokununca sayfa direkt açılır. */
+@media (hover: hover) {
+  .kategori-kart:hover {
+    transform: scale(1.03) rotate(-1deg);
+    background: var(--sari);
+    color: var(--gece);
+    box-shadow: 10px 10px 0 var(--krem);
+  }
+
+  .kategori-kart:hover .kategori-amp {
+    transform: rotate(-25deg) scale(1.2);
+    opacity: 0.3;
+  }
+
+  .kategori-kart:hover .kategori-ok {
+    transform: translateX(8px);
+  }
+}
+
+.kategori-kart:focus-visible {
+  background: var(--sari);
+  color: var(--gece);
+}
+
+@media (min-width: 768px) {
+  .kategoriler {
+    padding-top: 40px;
+    padding-bottom: 96px;
+  }
+
+  .kategoriler-ic {
+    grid-template-columns: 1fr 1fr; /* yan yana iki kart */
+    gap: 24px;
+  }
+
+  .kategori-kart {
+    min-height: 360px;
+    padding: 36px;
+  }
+
+  .kategori-amp {
+    font-size: 24rem;
+  }
+}
+
 /* ---------- Hareketi azalt ----------
    Telefonunda/bilgisayarında "hareketi azalt" ayarını açmış
    kullanıcılara animasyon göstermiyoruz (erişilebilirlik). */
@@ -239,5 +356,11 @@
   .hero-dekor-daire,
   .hero-dekor-amp {
     animation: none;
+  }
+
+  .kategori-kart,
+  .kategori-amp,
+  .kategori-ok {
+    transition: none;
   }
 }

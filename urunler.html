@@ -90,6 +90,40 @@
         <p class="urunler-sayi" id="urun-sayisi" aria-live="polite"></p>
       </div>
 
+      <!-- ========== FİLTRE VE SIRALAMA ========== -->
+      <div class="urunler-arac">
+        <!-- role="group": butonların birlikte tek bir seçim grubu olduğunu söyler.
+             aria-pressed: butonun şu an seçili (basılı) olup olmadığını söyler. -->
+        <div class="filtre" role="group" aria-label="Cinsiyete göre filtrele">
+          <!-- Seçili butonun arkasında kayan sarı zemin; konumunu JS verir -->
+          <span class="filtre-gosterge" aria-hidden="true"></span>
+          <button type="button" class="filtre-buton" data-cinsiyet="tumu" aria-pressed="true">Tümü</button>
+          <button type="button" class="filtre-buton" data-cinsiyet="kadin" aria-pressed="false">Kadın</button>
+          <button type="button" class="filtre-buton" data-cinsiyet="erkek" aria-pressed="false">Erkek</button>
+        </div>
+
+        <!-- Kendi çizdiğimiz açılır liste.
+             role="combobox" + role="listbox": ekran okuyuculara bunun bir
+             seçim kutusu olduğunu söyler; tarayıcının kendi <select>'i gibi okunur. -->
+        <div class="siralama">
+          <span class="siralama-etiket" id="siralama-etiket">Sırala:</span>
+          <button type="button" class="siralama-buton" id="siralama-buton"
+                  role="combobox" aria-haspopup="listbox" aria-expanded="false"
+                  aria-controls="siralama-liste" aria-labelledby="siralama-etiket siralama-buton">
+            <span class="siralama-secili">Önerilen</span>
+            <svg class="siralama-ok" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <ul class="siralama-liste" id="siralama-liste" role="listbox" aria-labelledby="siralama-etiket">
+            <li class="siralama-secenek" id="sirala-onerilen" role="option" data-imlec data-siralama="onerilen" aria-selected="true">Önerilen</li>
+            <li class="siralama-secenek" id="sirala-artan" role="option" data-imlec data-siralama="artan" aria-selected="false">Fiyat: düşükten yükseğe</li>
+            <li class="siralama-secenek" id="sirala-azalan" role="option" data-imlec data-siralama="azalan" aria-selected="false">Fiyat: yüksekten düşüğe</li>
+            <li class="siralama-secenek" id="sirala-yeni" role="option" data-imlec data-siralama="yeni" aria-selected="false">En yeniler</li>
+          </ul>
+        </div>
+      </div>
+
       <!-- Kartlar js/urunler.js tarafından buraya eklenir -->
       <div class="urun-listesi" id="urun-listesi"></div>
     </section>
@@ -110,6 +144,8 @@
         <ul>
           <li><a href="index.html">Ana Sayfa</a></li>
           <li><a href="urunler.html">Ürünler</a></li>
+          <li><a href="urunler.html?cinsiyet=kadin">Kadın</a></li>
+          <li><a href="urunler.html?cinsiyet=erkek">Erkek</a></li>
           <li><a href="sepet.html">Sepet</a></li>
           <li><a href="hakkimizda.html">Hakkımızda</a></li>
           <li><a href="iletisim.html">İletişim</a></li>

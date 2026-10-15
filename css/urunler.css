@@ -39,6 +39,166 @@
   color: color-mix(in srgb, var(--krem) 60%, transparent);
 }
 
+/* ---------- Filtre ve sıralama alanı ---------- */
+.urunler-arac {
+  display: flex;
+  flex-direction: column; /* telefonda alt alta */
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+/* Filtre butonları: tek bir hap şeklinin içinde yan yana */
+.filtre {
+  position: relative;
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--krem) 20%, transparent);
+}
+
+/* Seçili butonun arkasındaki sarı zemin. Butonlardan ayrı bir öğe
+   olduğu için bir butondan ötekine kayarak geçebiliyor. */
+.filtre-gosterge {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  border-radius: 999px;
+  background: var(--sari);
+}
+
+/* js "hazir" sınıfını ilk konumlamadan sonra ekler */
+.filtre.hazir .filtre-gosterge {
+  transition: transform 0.45s cubic-bezier(0.5, 1.6, 0.4, 1), width 0.45s cubic-bezier(0.5, 1.6, 0.4, 1);
+}
+
+.filtre-buton {
+  position: relative; /* sarı zeminin önünde dursun */
+  min-height: 40px;
+  padding: 8px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+.filtre-buton[aria-pressed="true"] {
+  color: var(--gece);
+}
+
+@media (hover: hover) {
+  .filtre-buton[aria-pressed="false"]:hover {
+    color: var(--sari);
+  }
+}
+
+/* ---------- Sıralama menüsü ---------- */
+.siralama {
+  position: relative; /* açılan liste buna göre konumlanır */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.siralama-etiket {
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--krem) 60%, transparent);
+}
+
+.siralama-buton {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--krem) 20%, transparent);
+  font-weight: 700;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.siralama-buton:hover,
+.siralama.acik .siralama-buton {
+  border-color: var(--sari);
+}
+
+.siralama-ok {
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.siralama.acik .siralama-ok {
+  transform: rotate(180deg);
+}
+
+.siralama-liste {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 20; /* kartların üstünde, üst menünün altında */
+  min-width: 260px;
+  padding: 6px;
+  border-radius: 16px;
+  background: var(--krem);
+  color: var(--gece);
+  box-shadow: 6px 6px 0 var(--mor);
+  /* Kapalıyken: görünmez, biraz yukarıda ve küçük */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scale(0.95);
+  transform-origin: top left; /* butonun olduğu köşeden büyüsün */
+  transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.3s;
+}
+
+.siralama.acik .siralama-liste {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.siralama-secenek {
+  min-height: 44px; /* parmakla rahat dokunulsun */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+/* Klavyeyle ya da fareyle üzerinde durulan seçenek */
+.siralama-secenek.aktif {
+  background: color-mix(in srgb, var(--gece) 8%, transparent);
+}
+
+/* Seçili seçeneğin yanında mor tik */
+.siralama-secenek[aria-selected="true"] {
+  font-weight: 700;
+}
+
+.siralama-secenek[aria-selected="true"]::after {
+  content: "✓";
+  color: var(--mor);
+  font-weight: 700;
+}
+
+/* Liste açılınca seçenekler sırayla aşağı kayarak gelir */
+.siralama.acik .siralama-secenek {
+  animation: secenek-gir 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+.siralama.acik .siralama-secenek:nth-child(2) { animation-delay: 0.04s; }
+.siralama.acik .siralama-secenek:nth-child(3) { animation-delay: 0.08s; }
+.siralama.acik .siralama-secenek:nth-child(4) { animation-delay: 0.12s; }
+
+@keyframes secenek-gir {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
 /* ---------- Ürün ızgarası ---------- */
 .urun-listesi {
   display: grid;
@@ -198,11 +358,46 @@
   }
 }
 
+/* ---------- Filtre/sıralama değişince kart animasyonları ----------
+   js önce listeye "kartlar-cikiyor" ekler: eski kartlar küçülüp kaybolur.
+   Sonra yeni kartlara "kart-giris" ekler: sırayla aşağıdan gelirler. */
+.kartlar-cikiyor .urun-kart {
+  animation: kart-cik 0.22s ease forwards; /* forwards: son karede kal (gizli) */
+}
+
+/* "backwards": animasyon sadece başlamadan önceki halini uygular, bitince
+   kart normal stiline döner. Böylece üzerine gelince yükselme efekti bozulmaz. */
+.kart-giris {
+  animation: kart-gir 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  animation-delay: calc(var(--sira) * 0.05s);
+}
+
+@keyframes kart-cik {
+  to {
+    opacity: 0;
+    transform: translateY(12px) scale(0.92);
+  }
+}
+
+@keyframes kart-gir {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .urun-kart,
   .urun-cizim,
-  .urun-gorsel-amp {
+  .urun-gorsel-amp,
+  .filtre.hazir .filtre-gosterge,
+  .siralama-liste,
+  .siralama-ok {
     transition: none;
+  }
+
+  .siralama.acik .siralama-secenek {
+    animation: none;
   }
 }
 
@@ -216,6 +411,21 @@
 
   .urunler-ust {
     margin-bottom: 40px;
+  }
+
+  /* Filtre solda, sıralama sağda */
+  .urunler-arac {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+  }
+
+  /* Sağ kenarda olduğu için liste sağa hizalı açılsın, ekrandan taşmasın */
+  .siralama-liste {
+    left: auto;
+    right: 0;
+    transform-origin: top right;
   }
 
   .urun-listesi {
