@@ -19,6 +19,7 @@
   --font-amp: 'Playfair Display', serif;
   --font-metin: 'DM Sans', sans-serif;
 
+  --serit-yukseklik: 36px;
   --menu-yukseklik: 64px;
   --kenar-bosluk: 20px;
   --icerik-genislik: 1200px;
@@ -66,6 +67,67 @@ svg {
 :focus-visible {
   outline: 2px solid var(--sari);
   outline-offset: 3px;
+}
+
+/* Ekranda görünmez ama ekran okuyucular okur */
+.gizli {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- Kayan yazı şeridi ---------- */
+.serit {
+  height: var(--serit-yukseklik);
+  overflow: hidden; /* şeridin taşan kısmı görünmesin */
+  display: flex;
+  align-items: center;
+  background: var(--sari);
+  color: var(--gece);
+  font-family: var(--font-baslik);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.serit-ray {
+  display: flex;
+  /* İki grubu birlikte sola kaydırır. Sadece transform kullanıyoruz:
+     tarayıcı bunu ekran kartıyla çizer, sayfayı yavaşlatmaz. */
+  animation: serit-kay 30s linear infinite;
+}
+
+/* Fareyle üzerine gelince dursun, okumak isteyen okuyabilsin */
+.serit:hover .serit-ray {
+  animation-play-state: paused;
+}
+
+.serit-grup {
+  flex-shrink: 0;   /* gruplar sıkışıp küçülmesin */
+  min-width: 100vw; /* geniş ekranlarda da en az ekran kadar olsun, boşluk kalmasın */
+  display: flex;
+  justify-content: space-around;
+  white-space: nowrap;
+}
+
+.serit-grup span {
+  padding: 0 14px;
+}
+
+.serit-ayrac {
+  color: var(--mercan);
+}
+
+/* İki grup eşit genişlikte olduğu için -50% tam bir grup boyu demek:
+   ilk grup çıkınca ikinci grup tam onun yerinde durur, döngü dikişsiz olur. */
+@keyframes serit-kay {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /* ---------- Logo ---------- */
@@ -254,6 +316,95 @@ svg {
   transform: translateX(4px);
 }
 
+/* ---------- Alt bilgi (footer) ---------- */
+.alt-bilgi {
+  border-top: 1px solid color-mix(in srgb, var(--krem) 10%, transparent);
+  padding: 48px var(--kenar-bosluk) 24px;
+}
+
+.alt-bilgi-ic {
+  max-width: var(--icerik-genislik);
+  margin: 0 auto;
+  display: grid;
+  gap: 36px;
+}
+
+.alt-bilgi-logo {
+  font-size: 2.5rem;
+}
+
+.alt-bilgi-marka p {
+  margin-top: 10px;
+  color: color-mix(in srgb, var(--krem) 70%, transparent);
+}
+
+.alt-bilgi-baslik {
+  margin-bottom: 12px;
+  font-family: var(--font-baslik);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sari);
+}
+
+.alt-bilgi-nav a {
+  display: inline-block;
+  padding: 4px 0;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.alt-bilgi-nav a:hover {
+  color: var(--sari);
+  transform: translateX(6px);
+}
+
+.alt-bilgi-sosyal ul {
+  display: flex;
+  gap: 12px;
+}
+
+.sosyal-ikon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--krem) 25%, transparent);
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.sosyal-ikon:hover {
+  background: var(--sari);
+  border-color: var(--sari);
+  color: var(--gece);
+  transform: translateY(-4px) rotate(-8deg);
+}
+
+.alt-bilgi-alt {
+  max-width: var(--icerik-genislik);
+  margin: 40px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid color-mix(in srgb, var(--krem) 10%, transparent);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--krem) 60%, transparent);
+}
+
+.demo-not {
+  color: var(--mercan);
+  font-weight: 500;
+}
+
+/* "Hareketi azalt" ayarı açıksa şerit kaymasın */
+@media (prefers-reduced-motion: reduce) {
+  .serit-ray {
+    animation: none;
+  }
+}
+
 /* =========================================================
    BÜYÜK EKRANLAR (tablet ve üstü)
    Mobile-first: yukarıdaki kurallar telefon için yazıldı,
@@ -320,5 +471,10 @@ svg {
   .ana-nav a:hover::after,
   .ana-nav a[aria-current="page"]::after {
     transform: scaleX(1);
+  }
+
+  /* Footer: marka geniş, iki sütun dar, yan yana */
+  .alt-bilgi-ic {
+    grid-template-columns: 2fr 1fr 1fr;
   }
 }

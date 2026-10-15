@@ -86,11 +86,11 @@ Genel hava: çok dinamik, hareketli ve ilgi çekici; ama animasyonlar sayfayı y
    - [x] Üst menü (logo, linkler, sepet ikonu, telefonda hamburger)
    - [x] Ana sayfa karşılama alanı (hero)
 1. Siteyi baştan sona saran özellikler
-   - [ ] Sayfanın en üstünde sürekli kayan yazı şeridi ("Ücretsiz kargo • Yeni sezon • Kendi tasarımımız" gibi)
+   - [x] Sayfanın en üstünde sürekli kayan yazı şeridi ("Ücretsiz kargo • Yeni sezon • Kendi tasarımımız" gibi)
    - [ ] Markaya uygun özel fare imleci (sadece bilgisayarda, telefonda normal kalsın)
    - [ ] Sayfalar arası yumuşak geçiş animasyonu
    - [ ] Menüde ürün arama
-   - [ ] Footer: logo, linkler, sosyal medya, "Bu bir demo sitedir" notu
+   - [x] Footer: logo, linkler, sosyal medya, "Bu bir demo sitedir" notu
 2. Ürünler sayfası
    - [ ] 12 demo ürün (6 kadın, 6 erkek; şık ve günlük giyim; gerçekçi TL fiyatlar)
    - [ ] Marka renklerinde yer tutucu görseller

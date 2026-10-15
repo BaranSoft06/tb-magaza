@@ -109,7 +109,8 @@
 
   position: relative;
   overflow: hidden;
-  min-height: calc(100svh - var(--menu-yukseklik)); /* svh: telefonun görünen ekran yüksekliği */
+  /* svh: telefonun görünen ekran yüksekliği. Şerit ve menüyü çıkarınca hero tam bir ekran olur. */
+  min-height: calc(100svh - var(--serit-yukseklik) - var(--menu-yukseklik));
   display: flex;
   align-items: center;
   padding: 48px var(--kenar-bosluk);
