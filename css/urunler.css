@@ -409,6 +409,42 @@
   }
 }
 
+/* ---------- "Hızlı bak" butonu ----------
+   Telefonda hep görünür. Fareli cihazlarda gizli durur, karta
+   gelince (ya da klavyeyle odaklanınca) aşağıdan kayarak çıkar. */
+.hizli-bak-buton {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  min-height: 38px;
+  border-radius: 999px;
+  background: var(--gece);
+  color: var(--krem);
+  font-weight: 700;
+  font-size: 0.85rem;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease, background 0.2s ease, color 0.2s ease;
+}
+
+@media (hover: hover) {
+  .hizli-bak-buton {
+    opacity: 0;
+    transform: translateY(120%);
+  }
+
+  /* :focus-within: kartın içindeki herhangi bir öğe odaktaysa */
+  .urun-kart:hover .hizli-bak-buton,
+  .urun-kart:focus-within .hizli-bak-buton {
+    opacity: 1;
+    transform: none;
+  }
+
+  .hizli-bak-buton:hover {
+    background: var(--krem);
+    color: var(--gece);
+  }
+}
+
 /* ---------- Kart bilgileri ---------- */
 .urun-bilgi {
   padding: 12px 2px 0;
@@ -483,6 +519,213 @@
   }
 }
 
+/* =========================================================
+   HIZLI BAKIŞ PENCERESİ
+   Krem zeminli bir kutu; telefonda görsel üstte, bilgiler altta.
+   Bilgisayarda yan yana iki sütun.
+   ========================================================= */
+
+/* Pencere açıkken arkadaki sayfa kaymasın.
+   :has() → "içinde açık bir hızlı bakış penceresi olan sayfa" demek */
+html:has(.hizli-bakis[open]) {
+  overflow: hidden;
+}
+
+/* <dialog>'un kendisi görünmez bir taşıyıcı; görünen kutu içindeki .hizli-bakis-ic */
+.hizli-bakis {
+  width: calc(100% - 32px);
+  max-width: 920px;
+  max-height: calc(100svh - 32px);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--gece);
+  overflow: visible; /* kutunun mor gölgesi kesilmesin */
+}
+
+/* ::backdrop: pencere açılınca arkadaki tüm sayfayı kaplayan katman */
+.hizli-bakis::backdrop {
+  background: color-mix(in srgb, var(--gece) 55%, transparent);
+  backdrop-filter: blur(10px); /* arkadaki sayfayı bulanıklaştırır */
+}
+
+.hizli-bakis-ic {
+  position: relative;
+  max-height: calc(100svh - 32px);
+  overflow-y: auto; /* içerik uzunsa kutunun içinde kaydırılsın */
+  border-radius: 24px;
+  background: var(--krem);
+  box-shadow: 8px 8px 0 var(--mor);
+}
+
+.hizli-bakis-kapat {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--gece);
+  color: var(--krem);
+  transition: transform 0.25s ease, background 0.2s ease;
+}
+
+.hizli-bakis-kapat:hover {
+  transform: rotate(90deg);
+  background: var(--mercan);
+}
+
+/* Görsel: kartlardaki .urun-gorsel'i kullanıyor, sadece şekli farklı */
+.hizli-bakis-gorsel {
+  aspect-ratio: 4 / 3;
+  border-radius: 24px 24px 0 0;
+}
+
+/* Kapat butonu sağ üstte olduğu için kalp burada sağ altta */
+.hizli-bakis .kalp-buton {
+  top: auto;
+  bottom: 12px;
+  right: 12px;
+  width: 48px;
+  height: 48px;
+}
+
+.hizli-bakis .kalp-buton svg {
+  width: 24px;
+  height: 24px;
+}
+
+.hizli-bakis-bilgi {
+  padding: 24px;
+}
+
+/* Kartlardaki yazı renkleri koyu zemin içindi; krem zeminde koyulaştırıyoruz */
+.hizli-bakis .urun-tur {
+  color: color-mix(in srgb, var(--gece) 60%, transparent);
+}
+
+.hizli-bakis-ad {
+  margin-top: 4px;
+  font-family: var(--font-baslik);
+  font-weight: 800;
+  font-size: 1.75rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.hizli-bakis .urun-fiyat {
+  margin-top: 10px;
+  font-size: 1.3rem;
+}
+
+.hizli-bakis .urun-fiyat del {
+  font-size: 1rem;
+  color: color-mix(in srgb, var(--gece) 50%, transparent);
+}
+
+.hizli-bakis-aciklama {
+  margin-top: 12px;
+  color: color-mix(in srgb, var(--gece) 80%, transparent);
+}
+
+.hizli-bakis-baslik {
+  margin: 20px 0 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hizli-bakis-renk-adlari {
+  margin-left: 6px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: color-mix(in srgb, var(--gece) 60%, transparent);
+}
+
+.hizli-bakis .urun-renkler {
+  margin-top: 0;
+  gap: 10px;
+}
+
+.hizli-bakis .renk-daire {
+  width: 28px;
+  height: 28px;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--gece) 25%, transparent);
+}
+
+/* Bedenler şimdilik sadece gösterim; seçim ürün detay sayfasında */
+.beden-listesi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.beden-kutu {
+  min-width: 46px;
+  height: 40px;
+  padding: 0 10px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  border: 1.5px solid color-mix(in srgb, var(--gece) 25%, transparent);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.hizli-bakis-git {
+  margin-top: 28px;
+}
+
+/* Açılış: kutu küçükten büyüyerek, hafif yaylanarak gelir; arka plan yavaşça kararıp bulanıklaşır.
+   Kapanış: js "kapaniyor" sınıfını ekler, animasyon bitince pencereyi kapatır. */
+.hizli-bakis[open] {
+  animation: pencere-ac 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+.hizli-bakis[open]::backdrop {
+  animation: arka-plan-ac 0.35s ease;
+}
+
+.hizli-bakis.kapaniyor {
+  animation: pencere-kapan 0.22s ease forwards;
+}
+
+.hizli-bakis.kapaniyor::backdrop {
+  animation: arka-plan-kapan 0.22s ease forwards;
+}
+
+@keyframes pencere-ac {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.85);
+  }
+}
+
+@keyframes pencere-kapan {
+  to {
+    opacity: 0;
+    transform: translateY(12px) scale(0.92);
+  }
+}
+
+@keyframes arka-plan-ac {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes arka-plan-kapan {
+  to {
+    opacity: 0;
+  }
+}
+
 /* ---------- Kart animasyonları ----------
    Kaydırdıkça belirme: js her karta önce "kart-bekliyor" verir (görünmez).
    Kart ekrana girince "kart-gorundu" verir: kart aşağıdan kayarak gelir.
@@ -531,8 +774,14 @@
   .siralama.acik .siralama-secenek,
   .kalp-buton.patla svg,
   .kalp-buton.patla::before,
-  .kalp-buton.patla::after {
+  .kalp-buton.patla::after,
+  .hizli-bakis[open],
+  .hizli-bakis[open]::backdrop {
     animation: none;
+  }
+
+  .hizli-bak-buton {
+    transition: none;
   }
 }
 
@@ -554,6 +803,26 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 40px;
+  }
+
+  /* Hızlı bakış: görsel solda, bilgiler sağda */
+  .hizli-bakis-ic {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hizli-bakis-gorsel {
+    aspect-ratio: auto;
+    min-height: 480px;
+    border-radius: 24px 0 0 24px;
+  }
+
+  .hizli-bakis-bilgi {
+    padding: 40px 36px 36px;
+  }
+
+  .hizli-bakis-ad {
+    font-size: 2.25rem;
   }
 
   /* Sağ kenarda olduğu için liste sağa hizalı açılsın, ekrandan taşmasın */

@@ -435,6 +435,12 @@ svg {
   left: 0;
   z-index: 2000; /* açılış animasyonunun (1000) bile üstünde */
   pointer-events: none; /* tıklamalar imlecin altındaki öğeye geçsin */
+  /* İmleç "popover" olarak üst katmanda duruyor (js/imlec.js). Tarayıcı
+     popover'lara ortalama, kenarlık ve beyaz zemin verir; onları sıfırlıyoruz. */
+  inset: 0 auto auto 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
   border-radius: 50%;
   opacity: 0;
   transition: opacity 0.2s ease;

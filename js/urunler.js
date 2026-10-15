@@ -118,6 +118,9 @@ function kartOlustur(urun) {
         ${cizimOlustur(urun)}
         ${etiketlerOlustur(urun)}
         ${kalpOlustur(urun)}
+        <button type="button" class="hizli-bak-buton" data-id="${urun.id}" aria-haspopup="dialog">
+          Hızlı bak<span class="gizli">: ${urun.ad}</span>
+        </button>
       </div>
       <div class="urun-bilgi">
         <p class="urun-tur">${CINSIYET_ADI[urun.cinsiyet]} · ${TUR_ADI[urun.tur]}</p>
@@ -419,13 +422,14 @@ document.addEventListener('click', function (olay) {
 // ayrı dinleyici eklemek yerine listenin tamamını dinliyoruz
 // (olay delegasyonu): tıklanan şey bir kalp butonuysa işliyoruz.
 // =========================================================
-urunAlani.addEventListener('click', function (olay) {
+// Hem kart listesi hem hızlı bakış penceresi bu fonksiyonu kullanır
+function kalpTiklandi(olay) {
   const buton = olay.target.closest('.kalp-buton');
   if (!buton) return;
 
   const eklendi = favoriDegistir(buton.dataset.id);
 
-  // Aynı ürünün sayfadaki bütün kalpleri (ileride hızlı bakıştaki de) güncellensin
+  // Aynı ürünün sayfadaki bütün kalpleri (kart + hızlı bakış) birlikte güncellensin
   document.querySelectorAll(`.kalp-buton[data-id="${buton.dataset.id}"]`).forEach(function (kalp) {
     kalp.setAttribute('aria-pressed', eklendi);
   });
@@ -436,6 +440,114 @@ urunAlani.addEventListener('click', function (olay) {
     void buton.offsetWidth; // animasyonu baştan başlatmak için (favoriler.js'teki gibi)
     buton.classList.add('patla');
   }
+}
+
+urunAlani.addEventListener('click', kalpTiklandi);
+
+// =========================================================
+// HIZLI BAKIŞ PENCERESİ
+// Kartlardaki "Hızlı bak" butonu, ürünün özetini sayfadan
+// ayrılmadan bir pencerede gösterir.
+// =========================================================
+const hizliBakis = document.getElementById('hizli-bakis');
+
+function hizliBakisIcerigi(urun) {
+  const renkAdlari = urun.renkler.map(function (renk) { return renk.ad; }).join(', ');
+  const bedenler = urun.bedenler
+    .map(function (beden) { return `<li class="beden-kutu">${beden}</li>`; })
+    .join('');
+
+  // Kart için yazdığımız parçaları (çizim, etiketler, kalp, fiyat, renkler)
+  // burada tekrar kullanıyoruz; aynı kodu iki kez yazmamış oluyoruz
+  // Tüm içerik tek bir kutunun (hizli-bakis-ic) içinde: böylece kutunun
+  // dışına tıklamak = pencerenin kendisine tıklamak = arka plana tıklamak olur
+  return `
+    <div class="hizli-bakis-ic">
+    <button type="button" class="hizli-bakis-kapat" aria-label="Pencereyi kapat">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18"/>
+      </svg>
+    </button>
+
+    <div class="hizli-bakis-gorsel urun-gorsel zemin-${urun.zemin}">
+      <span class="urun-gorsel-amp" aria-hidden="true">&amp;</span>
+      ${cizimOlustur(urun)}
+      ${etiketlerOlustur(urun)}
+      ${kalpOlustur(urun)}
+    </div>
+
+    <div class="hizli-bakis-bilgi">
+      <p class="urun-tur">${CINSIYET_ADI[urun.cinsiyet]} · ${TUR_ADI[urun.tur]}</p>
+      <h2 class="hizli-bakis-ad" id="hizli-bakis-ad">${urun.ad}</h2>
+      ${fiyatOlustur(urun)}
+      <p class="hizli-bakis-aciklama">${urun.aciklama}</p>
+
+      <h3 class="hizli-bakis-baslik">Renkler <span class="hizli-bakis-renk-adlari">${renkAdlari}</span></h3>
+      ${renklerOlustur(urun)}
+
+      <h3 class="hizli-bakis-baslik">Bedenler</h3>
+      <ul class="beden-listesi">${bedenler}</ul>
+
+      <a href="urun.html?id=${urun.id}" class="buton hizli-bakis-git">
+        Ürüne git
+        <span class="buton-ok" aria-hidden="true">→</span>
+      </a>
+    </div>
+    </div>`;
+}
+
+function hizliBakisAc(id) {
+  // find: listede koşula uyan ilk öğeyi bulur
+  const urun = URUNLER.find(function (u) { return u.id === id; });
+  if (!urun) return;
+
+  hizliBakis.innerHTML = hizliBakisIcerigi(urun);
+  hizliBakis.classList.remove('kapaniyor');
+  hizliBakis.showModal();
+
+  // Özel imleç pencerenin arkasında kalmasın (bkz. js/imlec.js)
+  if (window.imleciOneGetir) window.imleciOneGetir();
+}
+
+// Kapanırken önce küçülme animasyonu oynar, bitince pencere gerçekten kapanır
+function hizliBakisKapat() {
+  if (!hizliBakis.open || hizliBakis.classList.contains('kapaniyor')) return;
+
+  if (hareketiAzalt) {
+    hizliBakis.close();
+    return;
+  }
+
+  hizliBakis.classList.add('kapaniyor');
+  hizliBakis.addEventListener('animationend', function bitti(olay) {
+    // İçerideki başka animasyonlar (ör. kalp patlaması) yanlışlıkla kapatmasın
+    if (olay.target !== hizliBakis) return;
+    hizliBakis.removeEventListener('animationend', bitti);
+    hizliBakis.classList.remove('kapaniyor');
+    hizliBakis.close();
+  });
+}
+
+urunAlani.addEventListener('click', function (olay) {
+  const buton = olay.target.closest('.hizli-bak-buton');
+  if (buton) hizliBakisAc(buton.dataset.id);
+});
+
+hizliBakis.addEventListener('click', function (olay) {
+  // Pencerenin kendisine tıklanmışsa (içindeki bir öğeye değil) bu,
+  // arkadaki bulanık alana tıklandı demek: pencereyi kapat
+  if (olay.target === hizliBakis || olay.target.closest('.hizli-bakis-kapat')) {
+    hizliBakisKapat();
+    return;
+  }
+  kalpTiklandi(olay);
+});
+
+// Esc'ye basılınca tarayıcı pencereyi hemen kapatır. preventDefault ile
+// bunu durdurup kendi animasyonlu kapatmamızı kullanıyoruz.
+hizliBakis.addEventListener('cancel', function (olay) {
+  olay.preventDefault();
+  hizliBakisKapat();
 });
 
 // ---------- Sayfa açılışı ----------

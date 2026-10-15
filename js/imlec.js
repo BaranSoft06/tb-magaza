@@ -23,7 +23,33 @@
   halka.className = 'imlec-halka';
   nokta.setAttribute('aria-hidden', 'true');
   halka.setAttribute('aria-hidden', 'true');
+
+  // ÜST KATMAN (top layer): showModal() ile açılan pencereler (ör. hızlı bakış)
+  // sayfanın her şeyinin üstündeki özel bir katmana çıkar; z-index ne olursa
+  // olsun imleç onların arkasında kalırdı. "popover" yapılan öğeler de bu
+  // katmana girer. Katmanda en son açılan en üstte durur.
+  const ustKatman = typeof nokta.showPopover === 'function'; // tarayıcı destekliyor mu?
+  if (ustKatman) {
+    nokta.popover = 'manual'; // manual: tıklayınca ya da Esc ile kendiliğinden kapanmasın
+    halka.popover = 'manual';
+  }
+
   document.body.append(nokta, halka);
+
+  if (ustKatman) {
+    nokta.showPopover();
+    halka.showPopover();
+  }
+
+  // Bir pencere açıldıktan sonra çağrılır: imleci kapatıp yeniden açarak
+  // üst katmanda yine en öne alır (js/urunler.js kullanıyor)
+  window.imleciOneGetir = function () {
+    if (!ustKatman) return;
+    [nokta, halka].forEach(function (oge) {
+      oge.hidePopover();
+      oge.showPopover();
+    });
+  };
 
   // Farenin gerçek konumu ve halkanın şu anki konumu
   let fareX = 0;

@@ -104,7 +104,7 @@ Genel hava: çok dinamik, hareketli ve ilgi çekici; ama animasyonlar sayfayı y
    - [x] Tümü / Kadın / Erkek filtresi
    - [x] Kaydırdıkça beliren kartlar
    - [x] Kalp ikonuyla favorilere ekleme
-   - [ ] Açılan pencerede hızlı bakış
+   - [x] Açılan pencerede hızlı bakış
 3. Ürün detay sayfası
    - [ ] Büyük görsel
    - [ ] Beden ve renk seçimi
