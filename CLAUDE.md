@@ -75,3 +75,44 @@ TB/
 ```
 
 Dosya ve klasör adlarında Türkçe karakter, boşluk ve `&` kullanma.
+
+## Yol haritası
+
+Her adım ayrı yapılır. Kod yazmadan önce plan anlatılır, Baran onaylayınca yazılır.
+Genel hava: çok dinamik, hareketli ve ilgi çekici; ama animasyonlar sayfayı yavaşlatmamalı.
+
+0. Başlangıç
+   - [x] Ana sayfa açılış animasyonu ("&" dönerek ortaya çıkıyor)
+   - [x] Üst menü (logo, linkler, sepet ikonu, telefonda hamburger)
+   - [x] Ana sayfa karşılama alanı (hero)
+1. Siteyi baştan sona saran özellikler
+   - [ ] Sayfanın en üstünde sürekli kayan yazı şeridi ("Ücretsiz kargo • Yeni sezon • Kendi tasarımımız" gibi)
+   - [ ] Markaya uygun özel fare imleci (sadece bilgisayarda, telefonda normal kalsın)
+   - [ ] Sayfalar arası yumuşak geçiş animasyonu
+   - [ ] Menüde ürün arama
+   - [ ] Footer: logo, linkler, sosyal medya, "Bu bir demo sitedir" notu
+2. Ürünler sayfası
+   - [ ] 12 demo ürün (6 kadın, 6 erkek; şık ve günlük giyim; gerçekçi TL fiyatlar)
+   - [ ] Marka renklerinde yer tutucu görseller
+   - [ ] Tümü / Kadın / Erkek filtresi
+   - [ ] Kaydırdıkça beliren kartlar
+   - [ ] Kalp ikonuyla favorilere ekleme
+   - [ ] Açılan pencerede hızlı bakış
+3. Ürün detay sayfası
+   - [ ] Büyük görsel
+   - [ ] Beden ve renk seçimi
+   - [ ] Sepete eklerken ürünün sepet ikonuna uçma animasyonu
+4. Sepet sayfası
+   - [ ] Ürün ekleme / çıkarma, adet, toplam fiyat
+5. Ödeme sayfası (DEMO)
+   - [ ] Gerçek kredi kartı görseli
+   - [ ] Kart numarası, isim ve son kullanma tarihi yazıldıkça kartın üzerinde kendi yerinde belirsin
+   - [ ] CVC kutusuna tıklayınca kart dönüp arka yüzü görünsün
+   - [ ] Numaranın başına göre Visa / Mastercard logosu
+   - [ ] Sipariş tamamlanınca konfeti efekti
+   - [ ] Kart bilgileri hiçbir yere gönderilmez ve kaydedilmez; sayfada "Bu bir demodur, gerçek ödeme alınmaz" yazar
+6. Favoriler sayfası
+   - [ ] Favorilere eklenen ürünlerin listesi
+7. Hakkımızda ve İletişim sayfaları
+   - [ ] Hakkımızda
+   - [ ] İletişim
