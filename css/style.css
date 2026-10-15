@@ -398,6 +398,75 @@ svg {
   font-weight: 500;
 }
 
+/* ---------- Özel fare imleci ----------
+   Parçaları js/imlec.js oluşturur. "ozel-imlec" sınıfı sadece fareli
+   cihazlarda ve fare ilk kıpırdadığında eklenir; JavaScript çalışmazsa
+   normal imleç yerinde kalır. */
+.ozel-imlec,
+.ozel-imlec * {
+  cursor: none !important; /* !important: başka kurallar ezemesin */
+}
+
+.imlec-nokta,
+.imlec-halka {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000; /* açılış animasyonunun (1000) bile üstünde */
+  pointer-events: none; /* tıklamalar imlecin altındaki öğeye geçsin */
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.ozel-imlec .imlec-nokta,
+.ozel-imlec .imlec-halka {
+  opacity: 1;
+}
+
+.imlec-disarida .imlec-nokta,
+.imlec-disarida .imlec-halka {
+  opacity: 0;
+}
+
+.imlec-nokta {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px; /* genişliğin yarısı kadar geri: fare tam ortada olsun */
+  background: var(--sari);
+}
+
+/* Halkanın konumunu JS "transform" ile verir. Büyüme ise "scale" ile
+   ayrı yapılır, böylece ikisi birbirini ezmez. */
+.imlec-halka {
+  width: 36px;
+  height: 36px;
+  margin: -18px 0 0 -18px;
+  border: 2px solid var(--sari);
+  transition: opacity 0.2s ease, scale 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.3s ease, border-color 0.3s ease;
+}
+
+/* Link/buton üzerinde: halka büyür, içi hafif sarı dolar */
+.imlec-buyuk .imlec-halka {
+  scale: 1.7;
+  background: color-mix(in srgb, var(--sari) 20%, transparent);
+  border-color: transparent;
+}
+
+.imlec-buyuk .imlec-nokta {
+  opacity: 0;
+}
+
+/* Tıklarken halka küçülür */
+.imlec-basili .imlec-halka {
+  scale: 0.8;
+}
+
+.imlec-buyuk.imlec-basili .imlec-halka {
+  scale: 1.4;
+}
+
 /* "Hareketi azalt" ayarı açıksa şerit kaymasın */
 @media (prefers-reduced-motion: reduce) {
   .serit-ray {
