@@ -116,16 +116,46 @@ function kartOlustur(urun) {
 const urunAlani = document.getElementById('urun-listesi');
 const hareketiAzalt = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function urunleriGoster(liste, animasyonlu) {
+// =========================================================
+// KAYDIRDIKÇA BELİREN KARTLAR
+// IntersectionObserver: tarayıcıya "bu öğe ekrana girince bana haber
+// ver" dememizi sağlar. Kaydırma olayını sürekli dinleyip hesap
+// yapmaktan çok daha verimlidir, sayfayı yavaşlatmaz.
+// =========================================================
+const kartGozcusu = hareketiAzalt ? null : new IntersectionObserver(function (girdiler) {
+  // Aynı anda ekrana giren kartlar (ör. aynı satırdakiler) hepsi birden
+  // değil, kısa aralıklarla arka arkaya gelsin
+  let sira = 0;
+  girdiler.forEach(function (girdi) {
+    if (!girdi.isIntersecting) return;
+
+    const kart = girdi.target;
+    kart.style.setProperty('--gecikme', (sira * 0.08) + 's');
+    kart.classList.remove('kart-bekliyor');
+    kart.classList.add('kart-gorundu');
+    sira++;
+
+    // Kart bir kez göründü; artık izlemeye gerek yok
+    kartGozcusu.unobserve(kart);
+  });
+}, {
+  // Kartın en az %15'i görününce, ekranın alt kenarına biraz girince başla
+  threshold: 0.15,
+  rootMargin: '0px 0px -40px 0px'
+});
+
+function urunleriGoster(liste) {
+  // Eski kartları izlemeyi bırak (sayfadan siliniyorlar)
+  if (kartGozcusu) kartGozcusu.disconnect();
+
   // map her ürünü bir kart HTML'ine çevirir, join hepsini tek metinde birleştirir.
   // Sayfaya tek seferde eklemek, kartları tek tek eklemekten daha hızlıdır.
   urunAlani.innerHTML = liste.map(kartOlustur).join('');
 
-  if (animasyonlu) {
-    // Her karta sırasını veriyoruz; CSS bununla kartları arka arkaya getirir
-    urunAlani.querySelectorAll('.urun-kart').forEach(function (kart, sira) {
-      kart.style.setProperty('--sira', sira);
-      kart.classList.add('kart-giris');
+  if (kartGozcusu) {
+    urunAlani.querySelectorAll('.urun-kart').forEach(function (kart) {
+      kart.classList.add('kart-bekliyor'); // ekrana girene kadar görünmez
+      kartGozcusu.observe(kart);
     });
   }
 
@@ -177,7 +207,7 @@ let degisimZamanlayici = null;
 
 function listeyiYenile() {
   if (hareketiAzalt) {
-    urunleriGoster(listeyiHazirla(), false);
+    urunleriGoster(listeyiHazirla());
     return;
   }
 
@@ -187,7 +217,7 @@ function listeyiYenile() {
 
   degisimZamanlayici = setTimeout(function () {
     urunAlani.classList.remove('kartlar-cikiyor');
-    urunleriGoster(listeyiHazirla(), true);
+    urunleriGoster(listeyiHazirla());
   }, 220); // CSS'teki çıkış animasyonunun süresiyle aynı
 }
 
@@ -370,7 +400,7 @@ document.addEventListener('click', function (olay) {
 
 // ---------- Sayfa açılışı ----------
 filtreButonlariniAyarla();
-urunleriGoster(listeyiHazirla(), false);
+urunleriGoster(listeyiHazirla());
 
 // Sarı zemin ilk yerine animasyonsuz otursun; kayma efekti sadece
 // sonraki tıklamalarda çalışsın. requestAnimationFrame: bir sonraki karede.

@@ -102,7 +102,7 @@ Genel hava: çok dinamik, hareketli ve ilgi çekici; ama animasyonlar sayfayı y
    - [x] 12 demo ürün (6 kadın, 6 erkek; şık ve günlük giyim; gerçekçi TL fiyatlar)
    - [x] Marka renklerinde yer tutucu görseller
    - [x] Tümü / Kadın / Erkek filtresi
-   - [ ] Kaydırdıkça beliren kartlar
+   - [x] Kaydırdıkça beliren kartlar
    - [ ] Kalp ikonuyla favorilere ekleme
    - [ ] Açılan pencerede hızlı bakış
 3. Ürün detay sayfası

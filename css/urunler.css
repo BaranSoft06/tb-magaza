@@ -358,18 +358,25 @@
   }
 }
 
-/* ---------- Filtre/sıralama değişince kart animasyonları ----------
-   js önce listeye "kartlar-cikiyor" ekler: eski kartlar küçülüp kaybolur.
-   Sonra yeni kartlara "kart-giris" ekler: sırayla aşağıdan gelirler. */
-.kartlar-cikiyor .urun-kart {
-  animation: kart-cik 0.22s ease forwards; /* forwards: son karede kal (gizli) */
+/* ---------- Kart animasyonları ----------
+   Kaydırdıkça belirme: js her karta önce "kart-bekliyor" verir (görünmez).
+   Kart ekrana girince "kart-gorundu" verir: kart aşağıdan kayarak gelir.
+   Filtre/sıralama değişince: önce "kartlar-cikiyor" ile eski kartlar
+   küçülüp kaybolur, yeni kartlar yine ekrana girdikçe belirir. */
+.kart-bekliyor {
+  opacity: 0;
 }
 
-/* "backwards": animasyon sadece başlamadan önceki halini uygular, bitince
-   kart normal stiline döner. Böylece üzerine gelince yükselme efekti bozulmaz. */
-.kart-giris {
-  animation: kart-gir 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
-  animation-delay: calc(var(--sira) * 0.05s);
+/* "backwards": animasyon sadece başlamadan önceki halini (görünmez) uygular,
+   bitince kart normal stiline döner. Böylece üzerine gelince yükselme
+   efekti bozulmaz. --gecikme: aynı anda gelen kartlar arka arkaya gelsin. */
+.kart-gorundu {
+  animation: kart-gir 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  animation-delay: var(--gecikme, 0s);
+}
+
+.kartlar-cikiyor .urun-kart {
+  animation: kart-cik 0.22s ease forwards; /* forwards: son karede kal (gizli) */
 }
 
 @keyframes kart-cik {
