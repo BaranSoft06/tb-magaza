@@ -67,6 +67,8 @@ TB/
 ├── urunler.html
 ├── urun.html
 ├── sepet.html
+├── odeme.html
+├── favoriler.html
 ├── hakkimizda.html
 ├── iletisim.html
 ├── css/
@@ -104,6 +106,7 @@ Genel hava: çok dinamik, hareketli ve ilgi çekici; ama animasyonlar sayfayı y
    - [ ] Sepete eklerken ürünün sepet ikonuna uçma animasyonu
 4. Sepet sayfası
    - [ ] Ürün ekleme / çıkarma, adet, toplam fiyat
+   - [ ] Sepeti WhatsApp mesajı olarak gönderen buton
 5. Ödeme sayfası (DEMO)
    - [ ] Gerçek kredi kartı görseli
    - [ ] Kart numarası, isim ve son kullanma tarihi yazıldıkça kartın üzerinde kendi yerinde belirsin

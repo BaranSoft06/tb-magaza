@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hakkımızda | T&amp;B</title>
+  <meta name="description" content="T&B Hakkımızda sayfası çok yakında.">
+
+  <!-- GEÇİCİ SAYFA: Gerçek "Hakkımızda" sayfası yapılınca bu dosya baştan yazılacak. -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@1,700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/yakinda.css">
+
+  <script src="js/menu.js" defer></script>
+</head>
+<body>
+
+  <!-- ========== KAYAN YAZI ŞERİDİ ========== -->
+  <div class="serit">
+    <p class="gizli">Ücretsiz kargo, yeni sezon, kendi tasarımımız, İstanbul'dan</p>
+    <div class="serit-ray" aria-hidden="true">
+      <div class="serit-grup">
+        <span>Ücretsiz kargo</span><span class="serit-ayrac">•</span>
+        <span>Yeni sezon</span><span class="serit-ayrac">•</span>
+        <span>Kendi tasarımımız</span><span class="serit-ayrac">•</span>
+        <span>İstanbul'dan</span><span class="serit-ayrac">•</span>
+        <span>Ücretsiz kargo</span><span class="serit-ayrac">•</span>
+        <span>Yeni sezon</span><span class="serit-ayrac">•</span>
+        <span>Kendi tasarımımız</span><span class="serit-ayrac">•</span>
+        <span>İstanbul'dan</span><span class="serit-ayrac">•</span>
+      </div>
+      <div class="serit-grup">
+        <span>Ücretsiz kargo</span><span class="serit-ayrac">•</span>
+        <span>Yeni sezon</span><span class="serit-ayrac">•</span>
+        <span>Kendi tasarımımız</span><span class="serit-ayrac">•</span>
+        <span>İstanbul'dan</span><span class="serit-ayrac">•</span>
+        <span>Ücretsiz kargo</span><span class="serit-ayrac">•</span>
+        <span>Yeni sezon</span><span class="serit-ayrac">•</span>
+        <span>Kendi tasarımımız</span><span class="serit-ayrac">•</span>
+        <span>İstanbul'dan</span><span class="serit-ayrac">•</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ÜST MENÜ ========== -->
+  <header class="ust-menu">
+    <div class="ust-menu-ic">
+      <a href="index.html" class="logo" aria-label="T&amp;B ana sayfa">
+        <span>T</span><span class="logo-amp">&amp;</span><span>B</span>
+      </a>
+
+      <nav class="ana-nav" id="ana-nav" aria-label="Ana menü">
+        <ul>
+          <li><a href="index.html">Ana Sayfa</a></li>
+          <li><a href="urunler.html">Ürünler</a></li>
+          <li><a href="hakkimizda.html" aria-current="page">Hakkımızda</a></li>
+          <li><a href="iletisim.html">İletişim</a></li>
+        </ul>
+      </nav>
+
+      <div class="ust-menu-sag">
+        <a href="sepet.html" class="sepet-ikon" aria-label="Sepet (0 ürün)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 7h12l-1 13H7L6 7z"/>
+            <path d="M9 7V5a3 3 0 0 1 6 0v2"/>
+          </svg>
+          <span class="sepet-adet">0</span>
+        </a>
+
+        <button class="hamburger" type="button" aria-expanded="false" aria-controls="ana-nav" aria-label="Menüyü aç">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ========== YAKINDA ========== -->
+    <section class="yakinda">
+      <div class="yakinda-amp" aria-hidden="true">&amp;</div>
+
+      <div class="yakinda-ic">
+        <p class="yakinda-etiket">Hakkımızda</p>
+
+        <!-- aria-label: ekran okuyucu harfleri tek tek değil, kelimeyi bir bütün olarak okusun -->
+        <h1 class="yakinda-baslik" aria-label="Yakında">
+          <!-- Her harf ayrı bir span; --i harfin sırası, dalga animasyonunda gecikme için kullanılıyor -->
+          <span aria-hidden="true" style="--i: 0">Y</span><span aria-hidden="true" style="--i: 1">a</span><span aria-hidden="true" style="--i: 2">k</span><span aria-hidden="true" style="--i: 3">ı</span><span aria-hidden="true" style="--i: 4">n</span><span aria-hidden="true" style="--i: 5">d</span><span aria-hidden="true" style="--i: 6">a</span><span class="yakinda-nokta" aria-hidden="true" style="--i: 7">.</span>
+        </h1>
+
+        <p class="yakinda-metin">Bu sayfa üzerinde çalışıyoruz. Çok yakında burada.</p>
+
+        <a href="index.html" class="buton">
+          Ana sayfaya dön
+          <span class="buton-ok" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========== ALT BİLGİ (FOOTER) ========== -->
+  <footer class="alt-bilgi">
+    <div class="alt-bilgi-ic">
+      <div class="alt-bilgi-marka">
+        <a href="index.html" class="logo alt-bilgi-logo" aria-label="T&amp;B ana sayfa">
+          <span>T</span><span class="logo-amp">&amp;</span><span>B</span>
+        </a>
+        <p>Kendi tasarımımız, senin tarzın.</p>
+      </div>
+
+      <nav class="alt-bilgi-nav" aria-label="Alt menü">
+        <h2 class="alt-bilgi-baslik">Sayfalar</h2>
+        <ul>
+          <li><a href="index.html">Ana Sayfa</a></li>
+          <li><a href="urunler.html">Ürünler</a></li>
+          <li><a href="sepet.html">Sepet</a></li>
+          <li><a href="hakkimizda.html">Hakkımızda</a></li>
+          <li><a href="iletisim.html">İletişim</a></li>
+        </ul>
+      </nav>
+
+      <div class="alt-bilgi-sosyal">
+        <h2 class="alt-bilgi-baslik">Bizi takip et</h2>
+        <ul>
+          <li>
+            <a href="#" class="sosyal-ikon" aria-label="Instagram">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="5"/>
+                <circle cx="12" cy="12" r="4"/>
+                <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sosyal-ikon" aria-label="TikTok">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/>
+                <path d="M14 3c.4 2.6 2.4 4.6 5 5"/>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="alt-bilgi-alt">
+      <p>© 2026 T&amp;B</p>
+      <p class="demo-not">Bu bir demo sitedir.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

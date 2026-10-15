@@ -1,0 +1,125 @@
+/* =========================================================
+   T&B — GEÇİCİ "YAKINDA" SAYFALARI
+   Ürünler, Hakkımızda, İletişim ve Sepet sayfaları yapılana
+   kadar kullanılır. Gerçek sayfalar gelince bu dosya silinecek.
+   ========================================================= */
+
+.yakinda {
+  position: relative;
+  overflow: hidden;
+  min-height: calc(100svh - var(--serit-yukseklik) - var(--menu-yukseklik));
+  display: grid;
+  place-items: center;
+  padding: 48px var(--kenar-bosluk);
+  text-align: center;
+}
+
+.yakinda-ic {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: yakinda-gel 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Sayfanın adı: başlığın üstünde küçük, mor bir etiket */
+.yakinda-etiket {
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--mor);
+  font-family: var(--font-baslik);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.yakinda-baslik {
+  margin-top: 16px;
+  font-family: var(--font-baslik);
+  font-weight: 800;
+  /* Syne çok geniş bir font: telefonda kelime ekrana sığsın diye 11vw */
+  font-size: clamp(2.5rem, 11vw, 9rem);
+  line-height: 1;
+  white-space: nowrap; /* harfler ayrı span olduğu için kelime bölünmesin */
+  letter-spacing: -0.03em;
+}
+
+/* Harfler sırayla zıplayıp sarıya döner: bir dalga gibi soldan sağa geçer.
+   Her harf aynı animasyonu oynar ama --i sırasına göre biraz geç başlar. */
+.yakinda-baslik span {
+  display: inline-block; /* transform'un çalışması için gerekli */
+  animation: dalga 2.4s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.1s);
+}
+
+.yakinda-baslik .yakinda-nokta {
+  color: var(--mercan);
+}
+
+.yakinda-metin {
+  max-width: 30ch;
+  margin-top: 16px;
+  font-size: clamp(1.05rem, 3vw, 1.25rem);
+  color: color-mix(in srgb, var(--krem) 75%, transparent);
+}
+
+.yakinda .buton {
+  margin-top: 32px;
+}
+
+/* Arkada yavaşça dönen dev, içi boş "&" */
+.yakinda-amp {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%; /* tam ortaya al; dönme (transform) ile karışmasın diye ayrı özellik */
+  font-family: var(--font-amp);
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(22rem, 90vw, 40rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--mor);
+  opacity: 0.35;
+  user-select: none;
+  animation: yakinda-don 40s linear infinite;
+}
+
+@keyframes dalga {
+  0%,
+  40%,
+  100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-0.15em);
+    color: var(--sari);
+  }
+}
+
+@keyframes yakinda-gel {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes yakinda-don {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yakinda-ic,
+  .yakinda-baslik span,
+  .yakinda-amp {
+    animation: none;
+  }
+}
