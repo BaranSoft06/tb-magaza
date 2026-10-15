@@ -48,6 +48,8 @@ Fontlar (Google Fonts):
 - Playfair Display, italik: logodaki "&" işareti
 - DM Sans: metinler
 
+Rakamlar, fiyatlar, % işareti ve küçük ürün etiketleri her zaman DM Sans ile yazılır. Sadece harflerden oluşan, geniş harf aralıklı büyük harf etiketleri (şerit, bölüm başlıkları) Syne olabilir.
+
 Logo: "T&B" yazısı; T ve B kalın Syne, aradaki "&" büyük, italik ve sarı. Küçük kullanımlarda sadece "&" ikonu.
 
 ## Sayfalar (Aşama 1)
@@ -94,8 +96,8 @@ Genel hava: çok dinamik, hareketli ve ilgi çekici; ama animasyonlar sayfayı y
    - [ ] Menüde ürün arama
    - [x] Footer: logo, linkler, sosyal medya, "Bu bir demo sitedir" notu
 2. Ürünler sayfası
-   - [ ] 12 demo ürün (6 kadın, 6 erkek; şık ve günlük giyim; gerçekçi TL fiyatlar)
-   - [ ] Marka renklerinde yer tutucu görseller
+   - [x] 12 demo ürün (6 kadın, 6 erkek; şık ve günlük giyim; gerçekçi TL fiyatlar)
+   - [x] Marka renklerinde yer tutucu görseller
    - [ ] Tümü / Kadın / Erkek filtresi
    - [ ] Kaydırdıkça beliren kartlar
    - [ ] Kalp ikonuyla favorilere ekleme

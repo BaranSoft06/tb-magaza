@@ -1,0 +1,235 @@
+/* =========================================================
+   T&B — ÜRÜNLER SAYFASI
+   Sayfa başlığı ve ürün kartları. Önce telefon (2 sütun),
+   sonra tablet (3) ve bilgisayar (4 sütun).
+   ========================================================= */
+
+.urunler {
+  max-width: var(--icerik-genislik);
+  margin: 0 auto;
+  padding: 40px var(--kenar-bosluk) 72px;
+}
+
+/* ---------- Sayfa başlığı ---------- */
+.urunler-ust {
+  margin-bottom: 28px;
+}
+
+.urunler-etiket {
+  font-family: var(--font-baslik);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sari);
+}
+
+.urunler-baslik {
+  font-family: var(--font-baslik);
+  font-weight: 800;
+  /* clamp(en küçük, tercih edilen, en büyük): yazı ekran genişliğiyle
+     birlikte büyür ama belirlenen sınırların dışına çıkmaz */
+  font-size: clamp(2.5rem, 10vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.urunler-sayi {
+  margin-top: 10px;
+  color: color-mix(in srgb, var(--krem) 60%, transparent);
+}
+
+/* ---------- Ürün ızgarası ---------- */
+.urun-listesi {
+  display: grid;
+  /* repeat(2, 1fr): eşit genişlikte 2 sütun */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px 14px; /* satır arası, sütun arası */
+}
+
+/* ---------- Ürün kartı ---------- */
+.urun-kart {
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.urun-gorsel {
+  position: relative;
+  aspect-ratio: 4 / 5; /* genişlik ne olursa olsun yükseklik oranı sabit */
+  overflow: hidden;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  color: var(--gece); /* çizgilerin rengi (SVG'de currentColor) */
+}
+
+/* Yer tutucu zeminleri: marka renkleri */
+.zemin-sari   { background: var(--sari); }
+.zemin-mercan { background: var(--mercan); }
+.zemin-mor    { background: var(--mor); }
+.zemin-krem   { background: var(--krem); }
+
+/* Arkadaki silik büyük "&" */
+.urun-gorsel-amp {
+  position: absolute;
+  right: -6%;
+  bottom: -18%;
+  font-family: var(--font-amp);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 11rem;
+  line-height: 1;
+  color: var(--gece);
+  opacity: 0.12;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Çizim alanın üstünde dursun diye "&"dan sonra gelir */
+.urun-cizim {
+  position: relative;
+  width: 72%;
+  height: auto;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ---------- Etiketler (indirim, yeni) ---------- */
+.urun-etiketler {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.etiket {
+  padding: 4px 10px;
+  border-radius: 999px;
+  /* Küçük boyutta Syne'nin rakamları ve % işareti yamuk görünüyor,
+     o yüzden etiketlerde okunaklı DM Sans kullanıyoruz */
+  font-family: var(--font-metin);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
+.etiket-indirim {
+  background: var(--mercan);
+  color: var(--gece);
+}
+
+.etiket-yeni {
+  background: var(--mor);
+  color: var(--krem);
+  text-transform: uppercase;
+}
+
+/* ---------- Kart bilgileri ---------- */
+.urun-bilgi {
+  padding: 12px 2px 0;
+}
+
+.urun-tur {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--krem) 55%, transparent);
+}
+
+.urun-ad {
+  margin-top: 2px;
+  font-family: var(--font-baslik);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.urun-fiyat {
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 8px;
+  /* Fiyatlar her zaman DM Sans: rakamlar net okunsun */
+  font-family: var(--font-metin);
+  font-weight: 700;
+}
+
+.urun-fiyat del {
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--krem) 50%, transparent);
+}
+
+.fiyat-indirimli {
+  color: var(--mercan);
+}
+
+/* Renk daireleri */
+.urun-renkler {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+}
+
+.renk-daire {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--renk);
+  /* İnce açık kenarlık: siyah renk koyu zeminde kaybolmasın */
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--krem) 35%, transparent);
+}
+
+/* ---------- Üzerine gelince (sadece fareli cihazlar) ----------
+   Telefonda "hover" parmağı kaldırdıktan sonra takılı kalabildiği
+   için bu efektleri sadece fareli cihazlarda açıyoruz. */
+@media (hover: hover) {
+  .urun-kart:hover {
+    transform: translateY(-6px);
+  }
+
+  .urun-kart:hover .urun-cizim {
+    transform: rotate(-5deg) scale(1.06);
+  }
+
+  .urun-kart:hover .urun-gorsel-amp {
+    transform: rotate(-20deg) scale(1.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .urun-kart,
+  .urun-cizim,
+  .urun-gorsel-amp {
+    transition: none;
+  }
+}
+
+/* =========================================================
+   BÜYÜK EKRANLAR
+   ========================================================= */
+@media (min-width: 768px) {
+  .urunler {
+    padding-top: 64px;
+  }
+
+  .urunler-ust {
+    margin-bottom: 40px;
+  }
+
+  .urun-listesi {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px 24px;
+  }
+
+  .urun-ad {
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 1100px) {
+  .urun-listesi {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
