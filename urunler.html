@@ -16,9 +16,11 @@
   <script src="js/menu.js" defer></script>
   <script src="js/imlec.js" defer></script>
   <script src="js/favoriler.js" defer></script>
-  <!-- Sıra önemli: önce ürün listesi, sonra onu kullanan sayfa kodu.
-       "defer" olan dosyalar yazıldıkları sırayla çalışır. -->
+  <!-- Arama her sayfada çalışır: ürün listesi, ortak görsel kodu ve arama.
+       "defer" olan dosyalar yazıldıkları sırayla çalışır; sıra önemli. -->
   <script src="js/urunler-veri.js" defer></script>
+  <script src="js/urun-gorsel.js" defer></script>
+  <script src="js/arama.js" defer></script>
   <script src="js/urunler.js" defer></script>
 </head>
 <body>
@@ -67,6 +69,14 @@
       </nav>
 
       <div class="ust-menu-sag">
+        <!-- Arama paneli js/arama.js tarafından oluşturulur -->
+        <button type="button" class="arama-ikon" aria-label="Ürün ara" aria-haspopup="dialog" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"/>
+            <path d="M20 20l-4.2-4.2"/>
+          </svg>
+        </button>
+
         <a href="favoriler.html" class="favori-ikon" aria-label="Favoriler (0 ürün)">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 7.8 3.7 4.5 7.1 4.5c2 0 3.6 1.1 4.9 3 1.3-1.9 2.9-3 4.9-3 3.4 0 5.7 3.3 4.4 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/>
@@ -96,6 +106,21 @@
         <h1 class="urunler-baslik">Ürünler</h1>
         <!-- aria-live: sayı değişince (filtre gelince) ekran okuyucu yeni sayıyı okusun -->
         <p class="urunler-sayi" id="urun-sayisi" aria-live="polite"></p>
+      </div>
+
+      <!-- ========== ARAMA ŞERİDİ ==========
+           Sayfa menüdeki aramadan "?ara=..." ile açılınca görünür.
+           İçini js/urunler.js doldurur. "hidden": başta gizli. -->
+      <div class="arama-seridi" id="arama-seridi" hidden>
+        <p class="arama-seridi-metin">
+          ‘<span class="arama-seridi-sorgu"></span>’ için
+          <span class="arama-seridi-sayi"></span> sonuç
+        </p>
+        <button type="button" class="arama-seridi-kapat" aria-label="Aramayı temizle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18"/>
+          </svg>
+        </button>
       </div>
 
       <!-- ========== FİLTRE VE SIRALAMA ========== -->

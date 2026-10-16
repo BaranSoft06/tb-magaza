@@ -4,57 +4,12 @@
 // oluşturup sayfaya ekler.
 // =========================================================
 
-// Ekranda görünecek Türkçe adlar
-const CINSIYET_ADI = { kadin: 'Kadın', erkek: 'Erkek' };
-const TUR_ADI = { gomlek: 'Gömlek', pantolon: 'Pantolon', ceket: 'Ceket' };
-
-// Yer tutucu çizimler (gerçek fotoğraflar gelene kadar).
-// Her biri 100x100'lük bir alana çizilmiş basit bir SVG.
-// {renk} yazan yeri ürünün ilk rengiyle değiştiriyoruz, böylece
-// çizim ürünün gerçek rengini taşıyor.
-const CIZIMLER = {
-  gomlek: `
-    <path d="M36 16 L50 22 L64 16 L84 28 L77 44 L68 39 L68 86 L32 86 L32 39 L23 44 L16 28 Z" fill="{renk}"/>
-    <path d="M42 18 L50 30 L58 18"/>
-    <path d="M50 30 V86"/>
-    <circle cx="54" cy="44" r="1.6" fill="currentColor"/>
-    <circle cx="54" cy="58" r="1.6" fill="currentColor"/>
-    <circle cx="54" cy="72" r="1.6" fill="currentColor"/>`,
-  pantolon: `
-    <path d="M31 14 H69 L74 88 H55 L50 40 L45 88 H26 Z" fill="{renk}"/>
-    <path d="M31 23 H69"/>
-    <path d="M50 23 V40"/>
-    <path d="M38 23 Q38 32 32 34"/>
-    <path d="M62 23 Q62 32 68 34"/>`,
-  ceket: `
-    <path d="M35 14 L50 20 L65 14 L85 28 L82 72 L71 70 L71 88 L29 88 L29 70 L18 72 L15 28 Z" fill="{renk}"/>
-    <path d="M42 16 L50 48 L58 16"/>
-    <path d="M42 16 L37 30 L45 34"/>
-    <path d="M58 16 L63 30 L55 34"/>
-    <path d="M50 48 V88"/>
-    <path d="M34 66 H44"/>
-    <path d="M56 66 H66"/>`
-};
-
-// Intl.NumberFormat: sayıyı Türkiye'deki yazım şekline çevirir (1249 → "1.249")
-const sayiBicimi = new Intl.NumberFormat('tr-TR');
-
-function fiyatYaz(tutar) {
-  return sayiBicimi.format(tutar) + ' TL';
-}
+// Türkçe adlar, fiyat yazımı ve yer tutucu çizimler js/urun-gorsel.js'te
+// (menüdeki arama da onları kullanıyor).
 
 // Eski ve yeni fiyattan indirim yüzdesini hesaplar (1099 → 879 ise 20)
 function indirimYuzdesi(urun) {
   return Math.round((1 - urun.fiyat / urun.eskiFiyat) * 100);
-}
-
-function cizimOlustur(urun) {
-  const icerik = CIZIMLER[urun.tur].replace('{renk}', urun.renkler[0].kod);
-  return `
-    <svg class="urun-cizim" viewBox="0 0 100 100" fill="none" stroke="currentColor"
-         stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
-      ${icerik}
-    </svg>`;
 }
 
 function etiketlerOlustur(urun) {
@@ -168,7 +123,13 @@ function urunleriGoster(liste) {
 
   // map her ürünü bir kart HTML'ine çevirir, join hepsini tek metinde birleştirir.
   // Sayfaya tek seferde eklemek, kartları tek tek eklemekten daha hızlıdır.
-  urunAlani.innerHTML = liste.map(kartOlustur).join('');
+  if (liste.length === 0) {
+    // Aramaya uyan ürün yok: mesaj ve altında birkaç öneri ürün
+    urunAlani.innerHTML = sonucYokOlustur() +
+      aramaOnerileri(durum.cinsiyet).map(kartOlustur).join('');
+  } else {
+    urunAlani.innerHTML = liste.map(kartOlustur).join('');
+  }
 
   if (kartGozcusu) {
     urunAlani.querySelectorAll('.urun-kart').forEach(function (kart) {
@@ -178,6 +139,21 @@ function urunleriGoster(liste) {
   }
 
   document.getElementById('urun-sayisi').textContent = liste.length + ' ürün';
+  aramaSeridiniGuncelle(liste.length);
+}
+
+// Listenin en başında, tüm satırı kaplayan "sonuç yok" kutusu.
+// Aranan yazı kullanıcıdan geldiği için aramaGuvenliYaz ile koyuyoruz
+// (js/arama.js): içine kod yazılsa bile düz yazı olarak görünür.
+function sonucYokOlustur() {
+  return `
+    <div class="sonuc-yok">
+      <p class="sonuc-yok-baslik">Sonuç bulunamadı</p>
+      <p class="sonuc-yok-metin">
+        ‘${aramaGuvenliYaz(durum.ara)}’ ile eşleşen bir ürünümüz yok.
+        Başka bir kelime dene ya da bunlara göz at:
+      </p>
+    </div>`;
 }
 
 // =========================================================
@@ -190,19 +166,25 @@ const CINSIYETLER = ['tumu', 'kadin', 'erkek'];
 const SIRALAMALAR = ['onerilen', 'artan', 'azalan', 'yeni'];
 
 // URLSearchParams: adresteki "?cinsiyet=kadin" kısmını okumamızı sağlar.
-// Ana sayfadaki kategori kartları sayfayı bu şekilde filtreli açıyor.
+// Ana sayfadaki kategori kartları sayfayı bu şekilde filtreli açıyor,
+// menüdeki arama da "?ara=gömlek" ile açıyor.
 const adresBilgisi = new URLSearchParams(window.location.search);
 const adrestekiCinsiyet = adresBilgisi.get('cinsiyet');
 
 const durum = {
   // Adreste geçerli bir değer yoksa (ya da yanlış yazılmışsa) "Tümü"
   cinsiyet: CINSIYETLER.includes(adrestekiCinsiyet) ? adrestekiCinsiyet : 'tumu',
-  siralama: 'onerilen'
+  siralama: 'onerilen',
+  ara: (adresBilgisi.get('ara') || '').trim() // boşsa arama yok
 };
 
 function listeyiHazirla() {
+  // Arama varsa sadece aramaya uyanlarla başla (js/arama.js). urunAra
+  // en uygun ürünleri başa koyar; "Önerilen" sıralamada bu sıra kalır.
+  const baslangic = durum.ara ? urunAra(durum.ara) : URUNLER;
+
   // filter: koşula uyanları yeni bir listeye alır (asıl liste değişmez)
-  const liste = URUNLER.filter(function (urun) {
+  const liste = baslangic.filter(function (urun) {
     return durum.cinsiyet === 'tumu' || urun.cinsiyet === durum.cinsiyet;
   });
 
@@ -279,8 +261,40 @@ function adresiGuncelle() {
   } else {
     adres.searchParams.set('cinsiyet', durum.cinsiyet);
   }
+  if (durum.ara) {
+    adres.searchParams.set('ara', durum.ara);
+  } else {
+    adres.searchParams.delete('ara');
+  }
   history.replaceState(null, '', adres);
 }
+
+// =========================================================
+// ARAMA ŞERİDİ
+// Sayfa "?ara=..." ile açıldıysa listenin üstünde
+// "'gömlek' için 3 sonuç ✕" şeridi görünür. ✕ aramayı temizler.
+// =========================================================
+const aramaSeridi = document.getElementById('arama-seridi');
+
+function aramaSeridiniGuncelle(sayi) {
+  aramaSeridi.classList.remove('kapaniyor');
+  aramaSeridi.hidden = !durum.ara;
+  if (!durum.ara) return;
+
+  // textContent: aranan yazı HTML olarak değil düz yazı olarak girer
+  aramaSeridi.querySelector('.arama-seridi-sorgu').textContent = durum.ara;
+  aramaSeridi.querySelector('.arama-seridi-sayi').textContent = sayi;
+}
+
+aramaSeridi.querySelector('.arama-seridi-kapat').addEventListener('click', function () {
+  durum.ara = '';
+  adresiGuncelle();
+  // Şerit kapanma animasyonunu oynatır; liste yenilenince tamamen gizlenir
+  aramaSeridi.classList.add('kapaniyor');
+  listeyiYenile();
+  // Tıklanan buton kayboluyor; klavye odağı boşta kalmasın, filtreye geçsin
+  filtre.querySelector('[aria-pressed="true"]').focus();
+});
 
 // Ekran boyutu değişince ya da font geç yüklenince butonların
 // genişliği değişebilir; sarı zemin yerinden kaymasın
@@ -553,6 +567,18 @@ hizliBakis.addEventListener('cancel', function (olay) {
 // ---------- Sayfa açılışı ----------
 filtreButonlariniAyarla();
 urunleriGoster(listeyiHazirla());
+
+// Menüdeki aramada bir ürüne tıklanınca sayfa "?bak=urun-id" ile açılır:
+// o ürünün hızlı bakış penceresini aç. Ürün detay sayfası hazır olunca
+// arama sonuçları oraya gidecek ve bu kısma gerek kalmayacak.
+const bakilacakUrun = adresBilgisi.get('bak');
+if (bakilacakUrun) {
+  // Adresten sil: sayfa yenilenince pencere tekrar tekrar açılmasın
+  const adres = new URL(window.location.href);
+  adres.searchParams.delete('bak');
+  history.replaceState(null, '', adres);
+  hizliBakisAc(bakilacakUrun);
+}
 
 // Sarı zemin ilk yerine animasyonsuz otursun; kayma efekti sadece
 // sonraki tıklamalarda çalışsın. requestAnimationFrame: bir sonraki karede.
