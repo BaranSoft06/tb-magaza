@@ -88,6 +88,8 @@ Dosya ve klasör adlarında Türkçe karakter, boşluk ve `&` kullanma.
 Her adım ayrı yapılır. Kod yazmadan önce plan anlatılır, Baran onaylayınca yazılır.
 Genel hava: çok dinamik, hareketli ve ilgi çekici; ama animasyonlar sayfayı yavaşlatmamalı.
 
+Sıradaki işler: önce 1. adımdan kalan "Menüde ürün arama", sonra 3. adım (Favoriler), sonra 4. adım (Ürün detay). Sonrası numara sırasıyla.
+
 0. Başlangıç
    - [x] Ana sayfa açılış animasyonu ("&" dönerek ortaya çıkıyor)
    - [x] Üst menü (logo, linkler, sepet ikonu, telefonda hamburger)
@@ -96,7 +98,7 @@ Genel hava: çok dinamik, hareketli ve ilgi çekici; ama animasyonlar sayfayı y
    - [x] Sayfanın en üstünde sürekli kayan yazı şeridi ("Ücretsiz kargo • Yeni sezon • Kendi tasarımımız" gibi)
    - [x] Markaya uygun özel fare imleci (sadece bilgisayarda, telefonda normal kalsın)
    - [x] Sayfalar arası yumuşak geçiş animasyonu
-   - [ ] Menüde ürün arama
+   - [x] Menüde ürün arama
    - [x] Footer: logo, linkler, sosyal medya, "Bu bir demo sitedir" notu
 2. Ürünler sayfası
    - [x] 12 demo ürün (6 kadın, 6 erkek; şık ve günlük giyim; gerçekçi TL fiyatlar)
@@ -105,21 +107,25 @@ Genel hava: çok dinamik, hareketli ve ilgi çekici; ama animasyonlar sayfayı y
    - [x] Kaydırdıkça beliren kartlar
    - [x] Kalp ikonuyla favorilere ekleme
    - [x] Açılan pencerede hızlı bakış
-3. Ürün detay sayfası
+3. Favoriler sayfası
+   - [ ] Favorilere eklenen ürünlerin listesi (ürünler sayfasındaki kartlarla aynı)
+   - [ ] Favori yoksa "Henüz favorin yok" yazısı ve ürünlere giden bir buton
+   - [ ] Kalbe tıklayınca ürün listeden animasyonla çıkar
+4. Ürün detay sayfası
    - [ ] Büyük görsel
    - [ ] Beden ve renk seçimi
    - [ ] Sepete eklerken ürünün sepet ikonuna uçma animasyonu
-4. Sepet sayfası
+5. Sepet sayfası
    - [ ] Ürün ekleme / çıkarma, adet, toplam fiyat
    - [ ] Sepeti WhatsApp mesajı olarak gönderen buton
-5. Ödeme sayfası (DEMO)
+6. Ödeme sayfası (DEMO)
    - [ ] Gerçek kredi kartı görseli
    - [ ] Kart numarası, isim ve son kullanma tarihi yazıldıkça kartın üzerinde kendi yerinde belirsin
    - [ ] CVC kutusuna tıklayınca kart dönüp arka yüzü görünsün
    - [ ] Numaranın başına göre Visa / Mastercard logosu
    - [ ] Sipariş tamamlanınca konfeti efekti
    - [ ] Kart bilgileri hiçbir yere gönderilmez ve kaydedilmez; sayfada "Bu bir demodur, gerçek ödeme alınmaz" yazar
-6. Kendin Tasarla (Taylan onayladı)
+7. Kendin Tasarla (Taylan onayladı)
    - [ ] Ürün verisine her ürün için `kisisellestirilebilir: true/false` alanı; demo ürünlerden 5-6 tanesi (genellikle düşük ve orta fiyatlılar) seçilir
    - [ ] Bu ürünlerin kartında küçük "Kendin tasarla" rozeti, detay sayfasında "Kendin tasarla" butonu
    - [ ] Tasarım sayfası (tasarla.html): renk, kumaş, kalıp, baskı (ön/arka/kol, yazı veya desen), nakış, düğme/yaka tipi seçimi
@@ -128,13 +134,11 @@ Genel hava: çok dinamik, hareketli ve ilgi çekici; ama animasyonlar sayfayı y
    - [ ] Fiyat: ürünün kendi fiyatı + seçimlerin ek ücretleri. Ek ücretler tek bir dosyada (js/tasarim-fiyatlari.js) tablo halinde durur, Taylan kolayca değiştirebilir; şimdilik gerçekçi demo değerler
    - [ ] Fiyat sayaç animasyonuyla artar; yanında hangi seçimin ne kadar eklediği liste olarak görünür; fiyatın yanında "tahmini fiyat" yazar
    - [ ] Tasarlanan ürün seçimleriyle birlikte sepete eklenir
-7. Demo sohbet asistanı
+8. Demo sohbet asistanı
    - [ ] Sağ altta sohbet balonu, tüm sayfalarda; ödeme sayfasında form alanlarının üstüne binmez
    - [ ] Üzerinde "Demo asistan" yazar, yapay zeka gibi gösterilmez
    - [ ] Sık sorulan sorulara (kargo, iade, beden, kişiselleştirme) hazır cevaplar
    - [ ] Cevabı yoksa WhatsApp'a yönlendirir
-8. Favoriler sayfası
-   - [ ] Favorilere eklenen ürünlerin listesi
 9. Hakkımızda ve İletişim sayfaları
    - [ ] Hakkımızda
    - [ ] İletişim
