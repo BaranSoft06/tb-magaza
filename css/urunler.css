@@ -834,6 +834,23 @@ html:has(.hizli-bakis[open]) {
   overflow-wrap: anywhere;
 }
 
+/* Sonuç yokken öneri kartlarının üstündeki başlık; tüm satırı kaplar */
+.oneriler-baslik {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+  font-family: var(--font-baslik);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sari);
+  animation: kart-gir 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+.kartlar-cikiyor .oneriler-baslik {
+  animation: kart-cik 0.22s ease forwards;
+}
+
 @keyframes kart-cik {
   to {
     opacity: 0;
@@ -865,7 +882,8 @@ html:has(.hizli-bakis[open]) {
   .hizli-bakis[open],
   .hizli-bakis[open]::backdrop,
   .arama-seridi,
-  .sonuc-yok {
+  .sonuc-yok,
+  .oneriler-baslik {
     animation: none;
   }
 

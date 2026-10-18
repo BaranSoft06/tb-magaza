@@ -64,6 +64,15 @@ function aramaSadelestir(metin) {
   return aramaSadelestirKonumlu(metin).sade;
 }
 
+// Arama en az kaç harften sonra başlasın. Tek harf ("ı", "e") neredeyse
+// her kelimede geçtiği için bütün ürünleri getiriyordu.
+const ARAMA_EN_AZ_HARF = 2;
+
+// Boşluklar sayılmadan yeterince harf yazılmış mı? ("a b" → 2 harf)
+function aramaYeterliMi(sorgu) {
+  return sorgu.replace(/\s/g, '').length >= ARAMA_EN_AZ_HARF;
+}
+
 // Aranan metni kelimelere böler: "  Kadın   GÖMLEK " → ["kadin", "gomlek"]
 function aramaKelimeleri(sorgu) {
   return aramaSadelestir(sorgu)
@@ -125,6 +134,7 @@ function aramaPuani(urun, kelimeler, aciklamaDahil) {
 
 // Aramaya uyan ürünleri, en uygun olan başta olacak şekilde döndürür
 function urunAra(sorgu) {
+  if (!aramaYeterliMi(sorgu)) return [];
   const kelimeler = aramaKelimeleri(sorgu);
   if (kelimeler.length === 0) return [];
 
@@ -295,8 +305,8 @@ function aramaSonucOlustur(urun, sorgu, sira) {
 function aramaGuncelle() {
   const sorgu = aramaKutu.value.trim();
 
-  // Kutu boşsa: sadece popüler aramalar
-  if (sorgu === '') {
+  // Kutu boşsa ya da tek harf yazılmışsa: sadece popüler aramalar
+  if (!aramaYeterliMi(sorgu)) {
     aramaPopuler.hidden = false;
     aramaDurum.textContent = '';
     aramaSonucListesi.innerHTML = '';
@@ -377,7 +387,7 @@ function aramaKapat(sonra) {
 
 // Yazıyı ürünler sayfasına götürür (Enter ya da "hepsini gör")
 function aramaSayfasinaGit(sorgu) {
-  if (sorgu.trim() === '') return;
+  if (!aramaYeterliMi(sorgu)) return;
   window.location.href = aramaSayfasiAdresi(sorgu);
 }
 

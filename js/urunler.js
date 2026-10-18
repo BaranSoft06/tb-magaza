@@ -49,13 +49,18 @@ function renklerOlustur(urun) {
   return `<ul class="urun-renkler" aria-label="Renkler: ${adlar}">${daireler}</ul>`;
 }
 
+// Ekran okuyucunun kalp için okuyacağı yazı: butona basınca ne olacağını söyler
+function kalpEtiketi(urun, favoride) {
+  return urun.ad + (favoride ? ': favorilerden çıkar' : ': favorilere ekle');
+}
+
 // Kalp butonu. aria-pressed: ekran okuyucuya "favoride mi" bilgisini verir,
 // CSS de dolu/boş kalbi bu bilgiye göre çizer.
 function kalpOlustur(urun) {
   const favoride = favorideMi(urun.id);
   return `
     <button type="button" class="kalp-buton" data-id="${urun.id}"
-            aria-pressed="${favoride}" aria-label="${urun.ad}: favorilere ekle">
+            aria-pressed="${favoride}" aria-label="${kalpEtiketi(urun, favoride)}">
       <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 7.8 3.7 4.5 7.1 4.5c2 0 3.6 1.1 4.9 3 1.3-1.9 2.9-3 4.9-3 3.4 0 5.7 3.3 4.4 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/>
@@ -124,8 +129,9 @@ function urunleriGoster(liste) {
   // map her ürünü bir kart HTML'ine çevirir, join hepsini tek metinde birleştirir.
   // Sayfaya tek seferde eklemek, kartları tek tek eklemekten daha hızlıdır.
   if (liste.length === 0) {
-    // Aramaya uyan ürün yok: mesaj ve altında birkaç öneri ürün
+    // Aramaya uyan ürün yok: mesaj, öneri başlığı ve altında birkaç öneri ürün
     urunAlani.innerHTML = sonucYokOlustur() +
+      '<p class="oneriler-baslik">Bunlara göz atabilirsin</p>' +
       aramaOnerileri(durum.cinsiyet).map(kartOlustur).join('');
   } else {
     urunAlani.innerHTML = liste.map(kartOlustur).join('');
@@ -138,7 +144,9 @@ function urunleriGoster(liste) {
     });
   }
 
-  document.getElementById('urun-sayisi').textContent = liste.length + ' ürün';
+  // Öneri kartları sayılmaz; sonuç yoksa "0 ürün" yerine açıkça söyle
+  document.getElementById('urun-sayisi').textContent =
+    liste.length === 0 ? 'Sonuç bulunamadı' : liste.length + ' ürün';
   aramaSeridiniGuncelle(liste.length);
 }
 
@@ -151,7 +159,7 @@ function sonucYokOlustur() {
       <p class="sonuc-yok-baslik">Sonuç bulunamadı</p>
       <p class="sonuc-yok-metin">
         ‘${aramaGuvenliYaz(durum.ara)}’ ile eşleşen bir ürünümüz yok.
-        Başka bir kelime dene ya da bunlara göz at:
+        Başka bir kelime dene.
       </p>
     </div>`;
 }
@@ -170,12 +178,16 @@ const SIRALAMALAR = ['onerilen', 'artan', 'azalan', 'yeni'];
 // menüdeki arama da "?ara=gömlek" ile açıyor.
 const adresBilgisi = new URLSearchParams(window.location.search);
 const adrestekiCinsiyet = adresBilgisi.get('cinsiyet');
+const adrestekiSiralama = adresBilgisi.get('sirala');
+const adrestekiArama = (adresBilgisi.get('ara') || '').trim();
 
 const durum = {
   // Adreste geçerli bir değer yoksa (ya da yanlış yazılmışsa) "Tümü"
   cinsiyet: CINSIYETLER.includes(adrestekiCinsiyet) ? adrestekiCinsiyet : 'tumu',
-  siralama: 'onerilen',
-  ara: (adresBilgisi.get('ara') || '').trim() // boşsa arama yok
+  // Sıralama da aynı şekilde: geçerli değilse "Önerilen"
+  siralama: SIRALAMALAR.includes(adrestekiSiralama) ? adrestekiSiralama : 'onerilen',
+  // Boşsa ya da tek harfse arama yok (aramaYeterliMi: js/arama.js)
+  ara: aramaYeterliMi(adrestekiArama) ? adrestekiArama : ''
 };
 
 function listeyiHazirla() {
@@ -261,6 +273,11 @@ function adresiGuncelle() {
   } else {
     adres.searchParams.set('cinsiyet', durum.cinsiyet);
   }
+  if (durum.siralama === 'onerilen') {
+    adres.searchParams.delete('sirala');
+  } else {
+    adres.searchParams.set('sirala', durum.siralama);
+  }
   if (durum.ara) {
     adres.searchParams.set('ara', durum.ara);
   } else {
@@ -341,16 +358,22 @@ function listeyiKapat() {
   siralamaButon.removeAttribute('aria-activedescendant');
 }
 
+// Seçili seçeneği işaretler ve butonda yazısını gösterir
+function siralamaButonunuAyarla() {
+  secenekler.forEach(function (s) {
+    s.setAttribute('aria-selected', s.dataset.siralama === durum.siralama);
+  });
+  siralamaSecili.textContent = secenekler[SIRALAMALAR.indexOf(durum.siralama)].textContent;
+}
+
 function siralamaSec(sira) {
   const secenek = secenekler[sira];
-  secenekler.forEach(function (s) {
-    s.setAttribute('aria-selected', s === secenek);
-  });
-  siralamaSecili.textContent = secenek.textContent;
   listeyiKapat();
 
   if (secenek.dataset.siralama !== durum.siralama) {
     durum.siralama = secenek.dataset.siralama;
+    siralamaButonunuAyarla();
+    adresiGuncelle();
     listeyiYenile();
   }
 }
@@ -442,10 +465,12 @@ function kalpTiklandi(olay) {
   if (!buton) return;
 
   const eklendi = favoriDegistir(buton.dataset.id);
+  const urun = URUNLER.find(function (u) { return u.id === buton.dataset.id; });
 
   // Aynı ürünün sayfadaki bütün kalpleri (kart + hızlı bakış) birlikte güncellensin
   document.querySelectorAll(`.kalp-buton[data-id="${buton.dataset.id}"]`).forEach(function (kalp) {
     kalp.setAttribute('aria-pressed', eklendi);
+    kalp.setAttribute('aria-label', kalpEtiketi(urun, eklendi));
   });
 
   // Patlama animasyonu sadece eklerken; çıkarırken kalp sessizce boşalır
@@ -566,6 +591,9 @@ hizliBakis.addEventListener('cancel', function (olay) {
 
 // ---------- Sayfa açılışı ----------
 filtreButonlariniAyarla();
+siralamaButonunuAyarla(); // adresten gelen sıralama ("?sirala=artan") butonda görünsün
+// Adreste kullanılmayan bir arama varsa (ör. tek harf "?ara=ı") adresten de silinsin
+if (adrestekiArama && !durum.ara) adresiGuncelle();
 urunleriGoster(listeyiHazirla());
 
 // Menüdeki aramada bir ürüne tıklanınca sayfa "?bak=urun-id" ile açılır:
