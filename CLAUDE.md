@@ -11,6 +11,7 @@ T&B; Baran ve Taylan'ın kendi tasarladıkları kadın ve erkek kıyafetlerini s
 - Site havası: cesur, renkli, enerjik; bol animasyon
 - Ürün görselleri: ürünler hazır olana kadar örnek görseller
 - Baran kod tarafında, Taylan ticaret tarafında
+- Canlı site: https://baransoft06.github.io/tb-magaza/ (GitHub Pages, depo: BaranSoft06/tb-magaza)
 
 ## Çalışma şekli
 
