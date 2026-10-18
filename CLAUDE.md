@@ -24,6 +24,13 @@ T&B; Baran ve Taylan'ın kendi tasarladıkları kadın ve erkek kıyafetlerini s
 - **Git:** Her tamamlanan adımdan sonra Baran'a commit atmayı öner ve anlaşılır bir Türkçe commit mesajı yaz.
 - Baran kendini her zaman net ifade edemeyebilir; istediğini tahmin etmek yerine kısa sorularla netleştir.
 
+## Skill'ler
+
+- Her işe başlamadan önce `SKILLS.md` dosyasına bak ve işe uygun skill'i kullan.
+- Tasarım ve animasyon işlerinde `frontend-design` skill'ini kullan; ama bu dosyadaki marka renkleri ve fontlar her zaman önceliklidir.
+- Her özelliği bitirdikten sonra `webapp-testing` ile siteyi bilgisayar ve telefon boyutunda test et, ekran görüntüsü al ve sorun varsa Baran'a söyle.
+- Yeni bir skill eklendiğinde `SKILLS.md` dosyasını güncelle.
+
 ## Teknoloji (Aşama 1)
 
 - Sadece HTML, CSS ve JavaScript. Framework yok, build aracı yok.
